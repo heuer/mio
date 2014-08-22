@@ -5,6 +5,6 @@
 apply plugin: 'java'
 
 task generateLexer << {
-    ant.taskdef classname: 'JFlex.anttask.JFlexTask', name: 'jflex', classpath: configurations.build.asPath
-    ant.jflex(file: 'src/grammar/' + project.flexSource, destdir: 'src/main/java/')
+    ant.taskdef classname: 'jflex.anttask.JFlexTask', name: 'jflex', classpath: configurations.buildproject.asPath
+    ant.jflex(file: 'src/grammar/' + project.ext.flexSource, destdir: 'src/main/java/')
 }

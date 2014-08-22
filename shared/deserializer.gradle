@@ -49,15 +49,17 @@ processTestResources.dependsOn copyCXTMTests
 try {
     if (project.ext.jaySource != '') {
         dependencies {
-            build 'jay:jay:1.1.1@jar'
+            buildproject 'jay:jay:1.1.1@jar'
         }
+        sourceSets { main {  java { srcDir 'src/grammar' } } }
     }
 } catch(ex) {}
 
 try {
     if (project.ext.flexSource != '') {
         dependencies {
-            build 'de.jflex:jflex:1.4.3'
+            buildproject 'de.jflex:jflex:1.6.0'
         }
+        sourceSets { main {  java { srcDir 'src/grammar' } } }
     }
 } catch(ex) {}

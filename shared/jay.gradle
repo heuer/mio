@@ -3,13 +3,13 @@
  */
 task generateParser << {
     // Generate the parser from jay
-    ant.java(classpath: configurations.build.asPath,
+    ant.java(classpath: configurations.buildproject.asPath,
               classname: 'jay.Main',
-              output: 'src/main/java/' + project.jayTarget,
+              output: 'src/main/java/' + project.ext.jayTarget,
               error: 'yerror.log',
               fork: 'true') {
       arg value: '-v'
-      arg value: 'src/grammar/' + project.jaySource
+      arg value: 'src/grammar/' + project.ext.jaySource
       arg value: '../shared/jay/skeleton.java'
     }
 }
