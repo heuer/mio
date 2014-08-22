@@ -6,12 +6,17 @@
  */
 version = '0.9.5'
 
-projectName = 'Semagia MIO Linear Topic Maps (LTM)'
-projectDescription = 'Semagia MIO Linear Topic Maps (LTM)' //TODO
+ext.projectName = 'Semagia MIO Linear Topic Maps (LTM)'
+ext.projectDescription = 'Semagia MIO Linear Topic Maps (LTM)' //TODO
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
 
-flexSource = 'RealLTMLexer.flex'
-jaySource = 'RealLTMParser.y'
-jayTarget = '/com/semagia/mio/ltm/RealLTMParser.java'
+ext.flexSource = 'RealLTMLexer.flex'
+ext.jaySource = 'RealLTMParser.y'
+ext.jayTarget = '/com/semagia/mio/ltm/RealLTMParser.java'
 
 apply from: "$rootDir/shared/deserializer.gradle"
 

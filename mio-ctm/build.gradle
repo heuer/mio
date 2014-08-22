@@ -4,14 +4,22 @@
  * - Download Gradle from <http://www.gradle.org/>
  * - Execute gradle build
  */
+apply plugin: 'java'
+apply plugin: 'osgi'
+
 version = '0.1.0'
 
-projectName = 'Semagia MIO Compact Topic Maps (CTM)'
-projectDescription = 'Semagia MIO Compact Topic Maps (CTM)' //TODO
+ext.projectName = 'Semagia MIO Compact Topic Maps (CTM)'
+ext.projectDescription = 'Semagia MIO Compact Topic Maps (CTM)' //TODO
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
 
-flexSource = 'RealCTMLexer.flex'
-jaySource = 'RealCTMParser.y'
-jayTarget = '/com/semagia/mio/ctm/RealCTMParser.java'
+ext.flexSource = 'RealCTMLexer.flex'
+ext.jaySource = 'RealCTMParser.y'
+ext.jayTarget = '/com/semagia/mio/ctm/RealCTMParser.java'
 
 apply from: "$rootDir/shared/deserializer.gradle"
 

@@ -6,8 +6,13 @@
  */
 version = '0.9.6'
 
-projectName = 'Semagia MIO'
-projectDescription = 'Semagia MIO' //TODO
+ext.vendorName = 'Semagia'
+ext.projectName = 'Semagia MIO'
+ext.projectDescription = 'Semagia MIO' //TODO
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
 
 apply from: "$rootDir/shared/commons.gradle"
 
@@ -43,7 +48,7 @@ jar {
 }
 
 task testJar(type: Jar, dependsOn: compileTestJava) {
-    from sourceSets.test.classesDir
+    from sourceSets.test.output.classesDir
     baseName = jar.baseName + '-tests'
 }
 

@@ -13,13 +13,13 @@ uploadArchives {
             url project.projectURL
             
             organization {
-                name project.vendorName
-                url project.vendorURL
+                name project.ext.vendorName
+                url project.ext.vendorURL
             }
             licenses {
                license {
-                  name project.licenseName
-                  url project.licenseURL
+                  name project.ext.licenseName
+                  url project.ext.licenseURL
                }
             }
         }

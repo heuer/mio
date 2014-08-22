@@ -1,19 +1,22 @@
 /*
  * Common configuration used by all MIO subprojects.
  */
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'osgi'
 
 jar {
       manifest {
-        name = projectName
+        name = project.ext.projectName
         
         attributes 'Implementation-Version': project.version, 
-                  'Implementation-Vendor': project.vendorName, 
-                  'Implementation-URL': project.projectURL, 
-                  'Sealed': 'false'
+                   'Implementation-Vendor': project.ext.vendorName, 
+                   'Implementation-URL': project.ext.projectURL, 
+                   'Sealed': 'false'
                   
-        instruction 'Bundle-Vendor', project.vendorName
-        instruction 'Bundle-License', project.licenseURL
-        instruction 'Bundle-Description', project.projectDescription
+        instruction 'Bundle-Vendor', project.ext.vendorName
+        instruction 'Bundle-License', project.ext.licenseURL
+        instruction 'Bundle-Description', project.ext.projectDescription
         instruction 'Export-Package', '!*.internal.*, *'
       }
 }
@@ -22,23 +25,21 @@ apply from: "$rootDir/shared/maven.gradle"
 apply from: "$rootDir/shared/dist.gradle"
 
 configurations {
-    build {
-      extendsFrom compile
-    }
+    buildproject.extendsFrom(compile)
     all*.exclude group: 'com.thaiopensource', name: 'jing', version: '20030619'
 }
 
 repositories {
     mavenCentral()
-    mavenRepo urls: 'http://www.tmapi.org/maven-repository/'
-    mavenRepo urls: 'http://www.tmapi.org/maven-repository/snapshots/'
-    mavenRepo urls: 'http://tinytim.sourceforge.net/maven-repository/snapshots/'
-    mavenRepo urls: 'http://repository.semagia.com/thirdparty/'
-    mavenRepo urls: 'http://repository.semagia.com/releases/'
-    mavenRepo urls: 'http://repository.semagia.com/snapshots/'
-    mavenRepo urls: 'http://repository.jboss.org/maven2/'
-    mavenRepo urls: 'http://ontopia.googlecode.com/svn/maven-repository/'
-    mavenRepo urls: 'http://ontopia.googlecode.com/svn/maven-snapshot-repository/'
+    maven { url 'http://www.tmapi.org/maven-repository/' }
+    maven { url 'http://www.tmapi.org/maven-repository/snapshots/' }
+    maven { url 'http://tinytim.sourceforge.net/maven-repository/snapshots/' }
+    maven { url 'http://repository.semagia.com/thirdparty/' }
+    maven { url 'http://repository.semagia.com/releases/' }
+    maven { url 'http://repository.semagia.com/snapshots/' }
+    maven { url 'http://repository.jboss.org/maven2/' }
+    maven { url 'http://ontopia.googlecode.com/svn/maven-repository/' }
+    maven { url 'http://ontopia.googlecode.com/svn/maven-snapshot-repository/' }
 }
 
 dependencies {
@@ -54,7 +55,7 @@ dependencies {
 task copyAdditionalResources(type: Copy) {
     from "$rootDir/shared/"
     from "$projectDir"
-    into sourceSets.main.classesDir
+    into sourceSets.main.output.classesDir
     include('LICENSE.txt')
     include('NOTICE.txt')
 }

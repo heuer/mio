@@ -6,10 +6,15 @@
  */
 version = '0.9.4'
 
-projectName = 'Semagia MIO JSON Topic Maps (JTM)'
-projectDescription = 'Semagia MIO JSON Topic Maps (JTM)' //TODO
+ext.projectName = 'Semagia MIO JSON Topic Maps (JTM)'
+ext.projectDescription = 'Semagia MIO JSON Topic Maps (JTM)' //TODO
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
 
-flexSource = 'JsonLexer.flex'
+ext.flexSource = 'JsonLexer.flex'
 
 apply from: "$rootDir/shared/deserializer.gradle"
 

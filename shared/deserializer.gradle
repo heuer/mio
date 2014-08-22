@@ -29,15 +29,16 @@ sourceSets {
 task copyCXTMTests(type: Copy) {
     from "$rootDir/shared/cxtm/"
     from "$projectDir/test/resources/various/cxtm/"
-    into new File(sourceSets.test.classesDir, 'cxtm')
+    into new File(sourceSets.test.output.classesDir, 'cxtm')
 }
 
 task ontopiaTests(type: Test, dependsOn: jar) {
     ignoreFailures = true
-    testResultsDir = new File(project.testResultsDir, 'ontopia')
-    testReportDir = new File(project.testReportDir, 'ontopia')
+    //TODO Cannot set readonly property: testResultsDir for class: org.gradle.api.plugins.JavaPluginConvention
+    //project.testResultsDir = new File(project.testResultsDir, 'ontopia')
+    //project.testReportDir = new File(project.testReportDir, 'ontopia')
     classpath = test.classpath
-    testClassesDir = test.testClassesDir
+    testClassesDir = sourceSets.test.output.classesDir
     systemProperties['org.tmapi.core.TopicMapSystemFactory'] = 'net.ontopia.topicmaps.impl.tmapi2.TopicMapSystemFactory'
 }
 
@@ -46,7 +47,7 @@ build.dependsOn ontopiaTests
 processTestResources.dependsOn copyCXTMTests
 
 try {
-    if (project.jaySource != '') {
+    if (project.ext.jaySource != '') {
         dependencies {
             build 'jay:jay:1.1.1@jar'
         }
@@ -54,7 +55,7 @@ try {
 } catch(ex) {}
 
 try {
-    if (flexSource != '') {
+    if (project.ext.flexSource != '') {
         dependencies {
             build 'de.jflex:jflex:1.4.3'
         }

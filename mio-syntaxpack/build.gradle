@@ -6,12 +6,18 @@
  */
 version = '0.1.3'
 
-projectName = 'Semagia MIO Syntaxpack'
-projectDescription = 'Semagia MIO Syntaxpack' //TODO
+ext.projectName = 'Semagia MIO Syntaxpack'
+ext.projectDescription = 'Semagia MIO Syntaxpack' //TODO
+
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
 
 apply from: "$rootDir/shared/deserializer.gradle"
 
-factory_service_name = 'com.semagia.mio.IDeserializerFactory'
+ext.factory_service_name = 'com.semagia.mio.IDeserializerFactory'
 
 configurations {
     withcoredep
@@ -38,7 +44,7 @@ private def repack_jar(File jar, File destDir) {
         copy(todir: destDir) {
             fileset dir: unpacked_dir, includes: '**/*.class', excludes: '**/Activator.class'
         }
-        if (new File(unpacked_dir + '/META-INF/services/' + factory_service_name).exists()) {
+        if (new File(unpacked_dir + '/META-INF/services/' + ext.factory_service_name).exists()) {
           concat(destfile: factory_service, append: 'yes', eol: 'lf', ignoreempty: 'yes') {
             filelist dir: unpacked_dir + '/META-INF/services/', files: factory_service_name
           }
@@ -50,7 +56,7 @@ private def repack_jar(File jar, File destDir) {
         }
         if (new File(unpacked_dir + '/META-INF/services/').exists()) {
           copy(todir: 'src/main/resources/META-INF/services/') {
-            fileset dir: unpacked_dir + '/META-INF/services/', excludes: factory_service_name
+            fileset dir: unpacked_dir + '/META-INF/services/', excludes: ext.factory_service_name
           }
         }
         copy(todir: 'src/main/resources/') {

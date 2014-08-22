@@ -6,8 +6,15 @@
  */
 version = '0.9.6'
 
-projectName = 'Semagia MIO XML Topic Maps (XTM)'
-projectDescription = 'Semagia MIO XML Topic Maps (XTM)' //TODO
+ext.projectName = 'Semagia MIO XML Topic Maps (XTM)'
+ext.projectDescription = 'Semagia MIO XML Topic Maps (XTM)' //TODO
+
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
+
 
 apply from: "$rootDir/shared/deserializer.gradle"
 

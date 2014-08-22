@@ -6,27 +6,34 @@
  */
 version = '0.9.4'
 
-projectName = 'Semagia MIO RDF'
-projectDescription = 'Semagia MIO RDF' //TODO
+ext.projectName = 'Semagia MIO RDF'
+ext.projectDescription = 'Semagia MIO RDF' //TODO
 
-flexSource = 'RealCRTMLexer.flex'
-jaySource = 'RealCRTMParser.y'
-jayTarget = '/com/semagia/mio/rdf/crtm/RealCRTMParser.java'
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
+
+
+ext.flexSource = 'RealCRTMLexer.flex'
+ext.jaySource = 'RealCRTMParser.y'
+ext.jayTarget = '/com/semagia/mio/rdf/crtm/RealCRTMParser.java'
 
 apply from: "$rootDir/shared/deserializer.gradle"
 
-sesameLib = 'lib/openrdf-sesame-2.4.0-onejar.jar'
-rdfaLib = 'lib/rdfa-0.1.1.jar'
+ext.sesameLib = 'lib/openrdf-sesame-2.4.0-onejar.jar'
+ext.rdfaLib = 'lib/rdfa-0.1.1.jar'
 
-libs = [sesameLib, rdfaLib]
+ext.libs = [sesameLib, rdfaLib]
 
 repositories {
     // jarjar
-    mavenRepo urls: 'http://repo.joist.ws/'
+    maven { url 'http://repo.joist.ws/' }
 }
 
 dependencies {
-    build 'com.tonicsystems:jarjar:1.0'
+    buildproject 'com.tonicsystems:jarjar:1.0'
 
     compile files(libs)
 }
@@ -44,8 +51,8 @@ private def enhanceClasses(File classesDir) {
 
         jarjar(jarfile: the_jar) {
             fileset dir: classesDir
-            zipfileset src: sesameLib, excludes: 'META-INF/**'
-            zipfileset src: rdfaLib, excludes: 'META-INF/**'
+            zipfileset src: ext.sesameLib, excludes: 'META-INF/**'
+            zipfileset src: ext.rdfaLib, excludes: 'META-INF/**'
 
             rule pattern: "info.aduna.**", result: "com.semagia.mio.rdf.sesame.internal.aduna.@1"
             rule pattern: "org.openrdf.**", result: "com.semagia.mio.rdf.sesame.internal.openrdf.@1"
@@ -79,11 +86,11 @@ private def enhanceClasses(File classesDir) {
 }
 
 task includeRDF << {
-    enhanceClasses(sourceSets.main.classesDir)
+    enhanceClasses(sourceSets.main.output.classesDir)
 }
 
 task enhanceTestClasses << {
-    enhanceClasses(sourceSets.test.classesDir)
+    enhanceClasses(sourceSets.test.output.classesDir)
 }
 
 //jar.dependsOn includeRDF

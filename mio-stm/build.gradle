@@ -7,12 +7,18 @@
 group = 'com.semagia.mio'
 version = '0.1.0'
 
-projectName = 'Semagia MIO Snello Topic Maps (STM)'
-projectDescription = 'Semagia MIO Snello Topic Maps (STM)' //TODO
+ext.projectName = 'Semagia MIO Snello Topic Maps (STM)'
+ext.projectDescription = 'Semagia MIO Snello Topic Maps (STM)' //TODO
 
-flexSource = 'RealSnelloLexer.flex'
-jaySource = 'RealSnelloParser.y'
-jayTarget = '/com/semagia/mio/stm/RealSnelloParser.java'
+ext.vendorName = 'Semagia'
+ext.projectURL = 'http://mio.semagia.com/' //TODO
+ext.licenseURL = '' //TODO
+ext.vendorURL = '' //TODO
+ext.licenseName = '' // TODO
+
+ext.flexSource = 'RealSnelloLexer.flex'
+ext.jaySource = 'RealSnelloParser.y'
+ext.jayTarget = '/com/semagia/mio/stm/RealSnelloParser.java'
 
 apply from: "$rootDir/shared/deserializer.gradle"
 
