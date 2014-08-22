@@ -45,6 +45,8 @@ repositories {
 dependencies {
     compile 'org.slf4j:slf4j-api:(1.5.8,)'
 
+    testCompile 'junit:junit:4.8.1'
+
     testRuntime 'org.slf4j:slf4j-jdk14:(1.5.8,)',
                 'org.tmapi:tmapi:(2.0.2,)',
                 'org.tinytim:tinytim:2.0.1-SNAPSHOT',

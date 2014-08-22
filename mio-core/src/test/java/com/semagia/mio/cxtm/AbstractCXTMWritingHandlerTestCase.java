@@ -135,6 +135,7 @@ public abstract class AbstractCXTMWritingHandlerTestCase {
         while ((b = tmp.read()) != -1) {
             expected.write(b);
         }
+        tmp.close();
         byte[] res = result.toByteArray();
         byte[] ref = expected.toByteArray();
         if (!Arrays.equals(res, ref)) {

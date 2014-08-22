@@ -28,10 +28,6 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.tinytim.mio.CXTMTopicMapWriter;
-import org.tinytim.mio.TinyTimMapInputHandler;
-import org.tinytim.utils.XTM10Utils;
-
 import org.tmapi.core.TopicMap;
 import org.tmapi.core.TopicMapSystem;
 import org.tmapi.core.TopicMapSystemFactory;
@@ -121,6 +117,7 @@ public abstract class AbstractValidCXTMTestCase {
         while ((b = tmp.read()) != -1) {
             expected.write(b);
         }
+        tmp.close();
         byte[] res = result.toByteArray();
         byte[] ref = expected.toByteArray();
         if (!Arrays.equals(res, ref)) {
