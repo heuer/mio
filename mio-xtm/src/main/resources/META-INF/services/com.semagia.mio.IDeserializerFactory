@@ -1,0 +1,4 @@
+com.semagia.mio.xtm.XTMDeserializerFactory
+com.semagia.mio.xtm.XTM10DeserializerFactory
+com.semagia.mio.xtm.XTM20DeserializerFactory
+com.semagia.mio.xtm.XTM21DeserializerFactory

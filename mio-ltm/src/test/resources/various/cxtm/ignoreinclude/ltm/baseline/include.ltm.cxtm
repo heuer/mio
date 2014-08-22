@@ -1,0 +1,53 @@
+<topicMap>
+<topic number="1">
+<itemIdentifiers>
+<locator>#person</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Person</value>
+<type topicref="6"></type>
+</name>
+<rolePlayed ref="association.1.role.1"></rolePlayed>
+</topic>
+<topic number="2">
+<itemIdentifiers>
+<locator>#sentient-being</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Sentient being</value>
+<type topicref="6"></type>
+</name>
+<rolePlayed ref="association.1.role.2"></rolePlayed>
+</topic>
+<topic number="3">
+<itemIdentifiers>
+<locator>#sub</locator>
+</itemIdentifiers>
+</topic>
+<topic number="4">
+<itemIdentifiers>
+<locator>#super</locator>
+</itemIdentifiers>
+</topic>
+<topic number="5">
+<itemIdentifiers>
+<locator>#super-sub</locator>
+</itemIdentifiers>
+</topic>
+<topic number="6">
+<subjectIdentifiers>
+<locator>http://psi.topicmaps.org/iso13250/model/topic-name</locator>
+</subjectIdentifiers>
+</topic>
+<association number="1">
+<type topicref="5"></type>
+<role number="1">
+<player topicref="1"></player>
+<type topicref="3"></type>
+</role>
+<role number="2">
+<player topicref="2"></player>
+<type topicref="4"></type>
+</role>
+</association>
+</topicMap>

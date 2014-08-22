@@ -1,0 +1,171 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.1.3'
+
+projectName = 'Semagia MIO Syntaxpack'
+projectDescription = 'Semagia MIO Syntaxpack' //TODO
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+factory_service_name = 'com.semagia.mio.IDeserializerFactory'
+
+configurations {
+    withcoredep
+    nodeps
+}
+
+dependencies {
+    runtime 'thaiopensource:jing:20030619'
+    compile project(':mio-ctm'),
+            project(':mio-jtm'),
+            project(':mio-ltm'),
+            project(':mio-rdf'),
+            project(':mio-stm'),
+            project(':mio-tmxml'),
+            project(':mio-xtm')
+}
+
+private def repack_jar(File jar, File destDir) {
+    def unpacked_dir = "$buildDir/" + jar.name
+    def factory_service = 'src/main/resources/META-INF/services/' + factory_service_name
+    
+    ant {
+        unjar src: jar, dest: unpacked_dir
+        copy(todir: destDir) {
+            fileset dir: unpacked_dir, includes: '**/*.class', excludes: '**/Activator.class'
+        }
+        if (new File(unpacked_dir + '/META-INF/services/' + factory_service_name).exists()) {
+          concat(destfile: factory_service, append: 'yes', eol: 'lf', ignoreempty: 'yes') {
+            filelist dir: unpacked_dir + '/META-INF/services/', files: factory_service_name
+          }
+        }
+        if (new File(unpacked_dir + '/NOTICE.txt').exists()) {
+            concat(destfile: 'src/main/resources/NOTICE.txt', append: 'yes') {
+                filelist dir: unpacked_dir, files: 'NOTICE.txt'
+            }
+        }
+        if (new File(unpacked_dir + '/META-INF/services/').exists()) {
+          copy(todir: 'src/main/resources/META-INF/services/') {
+            fileset dir: unpacked_dir + '/META-INF/services/', excludes: factory_service_name
+          }
+        }
+        copy(todir: 'src/main/resources/') {
+            fileset dir: unpacked_dir + '/', includes: '**/*.rnc'
+        }
+    }
+    new File(unpacked_dir).deleteDir()
+}
+
+task addCore(dependsOn: jar) << {
+    def destDir = "$buildDir/nodepsJar"
+    configurations.compile.each { File f -> 
+      if (f.name.startsWith('mio-core')) {
+          def unpacked_dir = "$buildDir/" + f.name
+          ant {
+              unjar src: f, dest: unpacked_dir
+              copy(todir: destDir) {
+                  fileset dir: unpacked_dir, includes: '**/*.class', excludes: '**/Activator.class'
+              }
+          }
+          new File(unpacked_dir).deleteDir()
+      }
+    }
+    ant {
+        name = jar.archiveName
+        def syntaxpack = "$libsDir/" + name
+        def unpacked_dir = "$buildDir/" + name
+        unjar src: syntaxpack, dest: unpacked_dir
+        copy(todir: destDir) {
+            fileset dir: unpacked_dir, excludes: '**/MANIFEST.MF'
+        }
+        new File(unpacked_dir).deleteDir()
+    }
+}
+
+task relocateJars << {
+    def dest = sourceSets.main.classesDir
+    ant.delete dir: 'src/main/resources/META-INF/services/'
+    ant.delete file: 'src/main/resources/NOTICE.txt'
+    configurations.compile.each { File f -> 
+      if (f.name.startsWith('mio-') && !f.name.startsWith('mio-core')) { repack_jar(f, dest) } }
+}
+
+jar.dependsOn relocateJars
+
+task nodepsJar(type: Jar, dependsOn: addCore ) {
+    baseName = jar.baseName + '-nodeps'
+    from "$buildDir/nodepsJar"
+    manifest = osgiManifest {
+        classesDir = new File("$buildDir/nodepsJar")
+        classpath = sourceSets.main.runtimeClasspath
+        name = projectName + ' Nodeps'
+        symbolicName = 'com.semagia.mio.syntaxpacknodeps'
+        instruction 'Bundle-Activator', 'com.semagia.mio.syntaxpack.internal.osgi.NoDepsActivator'
+        instruction 'Import-Package', '!com.semagia.mio.*, !com.ibm.icu.*, !org.mozilla.intl.*, *'
+        instruction 'Export-Package', '!*.internal.*, *'
+    }
+}
+
+task release { }
+
+artifacts {
+    withcoredep jar
+    nodeps nodepsJar
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.syntaxpack.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.ctm.*, !com.semagia.mio.jtm.*, !com.semagia.mio.ltm.*, !com.semagia.mio.rdf.*, !com.semagia.mio.stm.*, !com.semagia.mio.tmxml.*, !com.semagia.mio.xtm.*, !com.ibm.icu.*, !org.mozilla.intl.*, *'
+    }
+}
+
+uploadWithcoredep {
+    repositories.mavenDeployer {
+        repository(url: "file://$buildDir/maven-repo/")
+        pom.whenConfigured { pom -> pom.dependencies = pom.dependencies.findAll { dep -> ((dep.artifactId.startsWith('mio-core') && !dep.artifactId.startsWith('mio-core-test')) || !dep.artifactId.startsWith('mio-')) } }
+        pom.project {
+            name project.projectName
+            description project.projectDescription
+            url project.projectURL
+            
+            organization {
+                name project.vendorName
+                url project.vendorURL
+            }
+            licenses {
+               license {
+                  name project.licenseName
+                  url project.licenseURL
+               }
+            }
+        }
+    }
+}
+
+uploadNodeps {
+    repositories.mavenDeployer {
+        repository(url: "file://$buildDir/maven-repo/")
+        pom.whenConfigured { pom -> pom.dependencies = pom.dependencies.findAll { dep -> !dep.artifactId.startsWith('mio-') } }
+        pom.project {
+            name project.projectName
+            description project.projectDescription
+            url project.projectURL
+            
+            organization {
+                name project.vendorName
+                url project.vendorURL
+            }
+            licenses {
+               license {
+                  name project.licenseName
+                  url project.licenseURL
+               }
+            }
+        }
+    }
+}

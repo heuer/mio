@@ -1,0 +1,27 @@
+/*
+ * Maven pom
+ */
+apply plugin: 'maven'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "file://$buildDir/maven-repo/")
+
+        pom.project {
+            name project.projectName
+            description project.projectDescription
+            url project.projectURL
+            
+            organization {
+                name project.vendorName
+                url project.vendorURL
+            }
+            licenses {
+               license {
+                  name project.licenseName
+                  url project.licenseURL
+               }
+            }
+        }
+    }
+}

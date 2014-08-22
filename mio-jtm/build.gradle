@@ -1,0 +1,23 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.9.4'
+
+projectName = 'Semagia MIO JSON Topic Maps (JTM)'
+projectDescription = 'Semagia MIO JSON Topic Maps (JTM)' //TODO
+
+flexSource = 'JsonLexer.flex'
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+compileJava.dependsOn generateLexer
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.jtm.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.jtm.*, *'
+    }
+}

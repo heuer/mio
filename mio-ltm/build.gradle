@@ -1,0 +1,29 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.9.5'
+
+projectName = 'Semagia MIO Linear Topic Maps (LTM)'
+projectDescription = 'Semagia MIO Linear Topic Maps (LTM)' //TODO
+
+flexSource = 'RealLTMLexer.flex'
+jaySource = 'RealLTMParser.y'
+jayTarget = '/com/semagia/mio/ltm/RealLTMParser.java'
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+dependencies {
+    runtime project(':mio-xtm')
+}
+
+compileJava.dependsOn generateParser, generateLexer
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.ltm.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.ltm.*, *'
+    }
+}

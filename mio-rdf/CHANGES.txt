@@ -1,0 +1,15 @@
+
+0.9.4 - 2010-mm-dd
+------------------
+* Added IErrorHandler which gets notified about errors and which
+  can decide to stop the mapping process or to log the errors.
+* Added a property to log unhandled RDF statements.
+* Added a Compact RTM (CRTM) mapping reader which provides
+  an alternative, non-RDF mapping syntax.
+* Refactored the RDF RTM mapping readers.
+  They do not need a triple / quad store anymore and reading 
+  the mapping is much more efficient and faster now.
+* Fixed issue #4: Create IMapping interface returned by IMappingReader 
+  instead of Map<String, IMapper>  
+* Fixed issue #5: Create a property to set the mapping
+* Added RDFa support

@@ -1,0 +1,11 @@
+include 'mio-core', 
+//        'mio-btm', 
+        'mio-ctm', 
+        'mio-jtm',
+        'mio-ltm',
+        'mio-rdf',
+        'mio-stm',
+        'mio-syntaxpack',
+//        'mio-tabella',
+        'mio-tmxml',
+        'mio-xtm'

@@ -1,0 +1,81 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.1.0'
+
+projectName = 'Semagia MIO Tabella'
+projectDescription = 'Semagia MIO Tabella' //TODO
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+csvLib = 'lib/opencsv-2.2.jar'
+
+repositories {
+    // jarjar
+    mavenRepo urls: 'http://repo.joist.ws/'
+}
+
+dependencies {
+    build 'com.tonicsystems:jarjar:1.0'
+    
+    runtime 'thaiopensource:jing:20030619'
+
+    compile files(csvLib)
+}
+
+private def enhanceClasses(File classesDir) {
+
+    def the_jar = "$buildDir/libs/tmp-mio-tabella.jar"
+
+    ant {
+      taskdef name: 'jarjar', 
+                classname: 'com.tonicsystems.jarjar.JarJarTask', 
+                classpath: configurations.build.asPath
+
+      jarjar(jarfile: the_jar) {
+            fileset dir: classesDir
+            zipfileset(src: csvLib)
+
+            rule pattern: 'au.com.bytecode.**', result: 'com.semagia.mio.tabella.internal.csv.@1'
+
+            keep pattern: 'au.com.bytecode.opencsv.CSVReader'
+            
+            // This is nesessary maybe due to the incompatibility of jarjar with Ant > 1.7
+            // see <https://code.google.com/p/jarjar/issues/detail?id=37>
+            // otherwise jarjar would not change the references from org.openrdf to com.semagia.mio.rdf.sesame
+            keep pattern: 'com.semagia.mio.tabella.**'
+      }
+    
+      unjar src: the_jar, dest: classesDir
+
+      // Some clean up since jarjar does not work very well with Ant > 1.7
+      // see <https://code.google.com/p/jarjar/issues/detail?id=37>
+      delete(includeemptydirs: 'true') {
+          // Deletes all empty packages / directories
+          fileset(dir: classesDir, excludes: '**/*.*')
+      }
+      delete dir: "$classesDir/META-INF/"
+      delete file: the_jar
+  }
+}
+
+task includeCSV << {
+    enhanceClasses(sourceSets.main.classesDir)
+}
+
+task enhanceTestClasses << {
+    enhanceClasses(sourceSets.test.classesDir)
+}
+
+jar.dependsOn includeCSV
+
+testClasses.dependsOn enhanceTestClasses
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.tabella.internal.osgi.Activator'
+    }
+}

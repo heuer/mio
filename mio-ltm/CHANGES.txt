@@ -1,0 +1,14 @@
+
+0.9.5 - 2011-mm-dd
+------------------
+* Added more lenient subject locator handling (in non-legacy mode)
+* Better error messages which include the expected tokens and 
+  information about the line / column in the LTM source.
+* Fixed issue #11: The LTM deserializer didn't distinguish between
+  #TOPICMAP id and #TOPICMAP ~ id.
+* The deserializer allows max. one subject locator
+  in the "legacy" mode.
+* The deserializer passes now all CXTM tests (previously
+  the "invalid" tests were not executed).
+* Added support for disabling #INCLUDE and #MERGEMAP directives
+  (both are supported by default)

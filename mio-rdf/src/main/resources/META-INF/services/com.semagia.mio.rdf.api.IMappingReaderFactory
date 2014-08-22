@@ -1,0 +1,8 @@
+com.semagia.mio.rdf.sesame.N3DeserializerFactory
+com.semagia.mio.rdf.sesame.NTriplesDeserializerFactory
+com.semagia.mio.rdf.sesame.RDFXMLDeserializerFactory
+com.semagia.mio.rdf.sesame.TrigDeserializerFactory
+com.semagia.mio.rdf.sesame.TrixDeserializerFactory
+com.semagia.mio.rdf.sesame.TurtleDeserializerFactory
+com.semagia.mio.rdf.sesame.RDFaDeserializerFactory
+com.semagia.mio.rdf.crtm.CRTMMappingReaderFactory

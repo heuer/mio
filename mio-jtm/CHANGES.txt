@@ -1,0 +1,14 @@
+
+0.9.4 - 2010-mm-dd
+------------------
+* The deserializer tries to detect the encoding of the JTM
+  instance now. If no BOM was found, the default JSON encoding
+  UTF-8 is assumed.
+* Fixed bug where topic reference by subject locator were interpreted
+  as subject identifier.
+* If a key like "reifier" is used i.e. as name value, the value
+  is set to 'reifier' instead of '"reifier"'
+* The parser accepts more JTM topic maps since it is more relaxed
+  regarding the key ordering (does not expect "item_type" / "version"
+  at the top of the JTM instance etc.).
+* JTM 1.1 support

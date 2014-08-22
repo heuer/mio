@@ -1,0 +1,62 @@
+/*
+ * Common configuration used by all MIO subprojects.
+ */
+apply plugin: 'java'
+
+apply from: "$rootDir/shared/commons.gradle"
+apply from: "$rootDir/shared/jay.gradle"
+apply from: "$rootDir/shared/jflex.gradle"
+
+configurations {
+    osgi
+}
+
+dependencies {
+    osgi 'org.osgi:org.osgi.core:4.0.1'
+    compile project(':mio-core')
+    compile 'com.semagia.mio:mio-core:0.9.6-SNAPSHOT'
+    testCompile 'com.semagia.mio:mio-core-tests:0.9.6-SNAPSHOT'
+    // While we do not want to expose OSGi as a depedency, we need the lib for Eclipse in the classpath
+    testCompile 'org.osgi:org.osgi.core:4.0.1'
+}
+
+sourceSets {
+    main {
+      compileClasspath = sourceSets.main.compileClasspath + configurations.osgi
+    }
+}
+
+task copyCXTMTests(type: Copy) {
+    from "$rootDir/shared/cxtm/"
+    from "$projectDir/test/resources/various/cxtm/"
+    into new File(sourceSets.test.classesDir, 'cxtm')
+}
+
+task ontopiaTests(type: Test, dependsOn: jar) {
+    ignoreFailures = true
+    testResultsDir = new File(project.testResultsDir, 'ontopia')
+    testReportDir = new File(project.testReportDir, 'ontopia')
+    classpath = test.classpath
+    testClassesDir = test.testClassesDir
+    systemProperties['org.tmapi.core.TopicMapSystemFactory'] = 'net.ontopia.topicmaps.impl.tmapi2.TopicMapSystemFactory'
+}
+
+build.dependsOn ontopiaTests
+
+processTestResources.dependsOn copyCXTMTests
+
+try {
+    if (project.jaySource != '') {
+        dependencies {
+            build 'jay:jay:1.1.1@jar'
+        }
+    }
+} catch(ex) {}
+
+try {
+    if (flexSource != '') {
+        dependencies {
+            build 'de.jflex:jflex:1.4.3'
+        }
+    }
+} catch(ex) {}

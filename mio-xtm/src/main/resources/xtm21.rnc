@@ -1,0 +1,106 @@
+# ===========================================================================
+#
+# XML Topic Maps 2.1
+#
+# This is the normative RELAX-NG schema for the XTM 2.1 and 2.0
+# syntaxes, as defined in ISO 13250-3. Note that the two syntaxes
+# have been merged into a single schema.
+#
+# See http://www.isotopicmaps.org/sam/sam-xtm/
+#
+# ===========================================================================
+
+# --- Common declarations
+
+default namespace = "http://www.topicmaps.org/xtm/"
+namespace xtm = "http://www.topicmaps.org/xtm/"
+
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+start = topicMap2 | topicMap21
+
+href = attribute href { xsd:anyURI }
+
+any-markup = (text | element * - xtm:* { attribute * { text }*, any-markup* })*
+
+mergeMap = element mergeMap { href }
+
+id = attribute id { xsd:ID }
+
+value = element value { text }
+
+datatype = attribute datatype { xsd:anyURI }
+
+resourceData = element resourceData { datatype?, any-markup }
+
+topicRef = element topicRef { href }
+resourceRef = element resourceRef { href }
+subjectLocator = element subjectLocator { href }
+subjectIdentifier = element subjectIdentifier { href }
+itemIdentity = element itemIdentity { href }
+
+# --- XTM 2.1
+
+topicMap21 = element topicMap { reifiable21, version21, mergeMap*,
+                                 (topic21 | association21)* }
+
+version21 = attribute version { "2.1" }
+
+topic21 = element topic { 
+  (id | itemIdentity | subjectLocator | subjectIdentifier)+,
+  instanceOf21?, (name21 | occurrence21)* }
+
+name21 = element name { reifiable21, type21?, scope21?, value, variant21* }
+
+variant21 = element variant { reifiable21, scope21, (resourceRef | resourceData)}
+
+scope21 = element scope { tref+ }
+
+instanceOf21 = element instanceOf { tref+ }
+
+type21 = element type { tref }
+
+occurrence21 = element occurrence { reifiable21,
+  type21, scope21?, ( resourceRef | resourceData ) }
+
+association21 = element association { reifiable21, type21, scope21?, role21+ }
+
+role21 = element role { reifiable21, type21, tref }
+
+reifiable21 = (attribute reifier { xsd:anyURI } | reifier)?, itemIdentity*
+reifier = element reifier { tref }
+tref = topicRef | subjectIdentifierRef | subjectLocatorRef
+
+subjectLocatorRef = element subjectLocatorRef { href }
+subjectIdentifierRef = element subjectIdentifierRef { href }
+
+# --- XTM 2.0
+
+reifiable2 = attribute reifier { xsd:anyURI }?, itemIdentity*
+topicMap2 = element topicMap { reifiable2, version2, mergeMap*,
+                                 (topic2 | association2)* }
+
+version2 = attribute version { "2.0" }
+
+topic2 = element topic { id, 
+                        (itemIdentity | subjectLocator | subjectIdentifier)*,
+                        instanceOf2?, (name2 | occurrence2)* }
+
+name2 = element name { reifiable2, type2?, scope2?, value, variant2* }
+
+variant2 = element variant { reifiable2, scope2, (resourceRef | resourceData) }
+
+scope2 = element scope { topicRef+ }
+
+instanceOf2 = element instanceOf { topicRef+ }
+
+type2 = element type { topicRef }
+
+occurrence2 = element occurrence { reifiable2,
+  type2, scope2?, ( resourceRef | resourceData ) }
+
+association2 = element association { reifiable2, type2, scope2?, role2+ }
+
+role2 = element role { reifiable2, type2, topicRef }
+
+# --- End of schema

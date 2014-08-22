@@ -1,0 +1,77 @@
+<topicMap>
+<topic number="1">
+<itemIdentifiers>
+<locator>#person</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Person</value>
+<type topicref="3"></type>
+</name>
+<rolePlayed ref="association.1.role.1"></rolePlayed>
+</topic>
+<topic number="2">
+<itemIdentifiers>
+<locator>#sentient-being</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Sentient being</value>
+<type topicref="3"></type>
+</name>
+<rolePlayed ref="association.1.role.2"></rolePlayed>
+</topic>
+<topic number="3">
+<subjectIdentifiers>
+<locator>http://psi.topicmaps.org/iso13250/model/topic-name</locator>
+</subjectIdentifiers>
+</topic>
+<topic number="4">
+<subjectIdentifiers>
+<locator>http://www.topicmaps.org/xtm/1.0/core.xtm#subclass</locator>
+</subjectIdentifiers>
+<itemIdentifiers>
+<locator>#sub</locator>
+<locator>core.sub#sub</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Subclass</value>
+<type topicref="3"></type>
+</name>
+</topic>
+<topic number="5">
+<subjectIdentifiers>
+<locator>http://www.topicmaps.org/xtm/1.0/core.xtm#superclass</locator>
+</subjectIdentifiers>
+<itemIdentifiers>
+<locator>#super</locator>
+<locator>core.sub#super</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Superclass</value>
+<type topicref="3"></type>
+</name>
+</topic>
+<topic number="6">
+<subjectIdentifiers>
+<locator>http://www.topicmaps.org/xtm/1.0/core.xtm#superclass-subclass</locator>
+</subjectIdentifiers>
+<itemIdentifiers>
+<locator>#super-sub</locator>
+<locator>core.sub#super-sub</locator>
+</itemIdentifiers>
+<name number="1">
+<value>Superclass-subclass</value>
+<type topicref="3"></type>
+</name>
+</topic>
+<association number="1">
+<type topicref="6"></type>
+<role number="1">
+<player topicref="1"></player>
+<type topicref="4"></type>
+</role>
+<role number="2">
+<player topicref="2"></player>
+<type topicref="5"></type>
+</role>
+</association>
+</topicMap>

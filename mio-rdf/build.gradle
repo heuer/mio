@@ -1,0 +1,98 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.9.4'
+
+projectName = 'Semagia MIO RDF'
+projectDescription = 'Semagia MIO RDF' //TODO
+
+flexSource = 'RealCRTMLexer.flex'
+jaySource = 'RealCRTMParser.y'
+jayTarget = '/com/semagia/mio/rdf/crtm/RealCRTMParser.java'
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+sesameLib = 'lib/openrdf-sesame-2.4.0-onejar.jar'
+rdfaLib = 'lib/rdfa-0.1.1.jar'
+
+libs = [sesameLib, rdfaLib]
+
+repositories {
+    // jarjar
+    mavenRepo urls: 'http://repo.joist.ws/'
+}
+
+dependencies {
+    build 'com.tonicsystems:jarjar:1.0'
+
+    compile files(libs)
+}
+
+compileJava.dependsOn generateParser, generateLexer
+
+private def enhanceClasses(File classesDir) {
+
+    def the_jar = "$buildDir/libs/tmp-mio-rdf-sesame.jar"
+
+    ant {
+        taskdef name: 'jarjar', 
+            classname: 'com.tonicsystems.jarjar.JarJarTask', 
+            classpath: configurations.build.asPath
+
+        jarjar(jarfile: the_jar) {
+            fileset dir: classesDir
+            zipfileset src: sesameLib, excludes: 'META-INF/**'
+            zipfileset src: rdfaLib, excludes: 'META-INF/**'
+
+            rule pattern: "info.aduna.**", result: "com.semagia.mio.rdf.sesame.internal.aduna.@1"
+            rule pattern: "org.openrdf.**", result: "com.semagia.mio.rdf.sesame.internal.openrdf.@1"
+            rule pattern: "net.rootdev.**", result: "com.semagia.mio.rdf.sesame.internal.rdfa.@1"
+
+            keep pattern: "com.semagia.mio.rdf.**"
+        }
+    
+        unjar src: the_jar, dest: classesDir
+    }
+    
+    def metaInfDir = new File("$classesDir/META-INF/")
+    
+    metaInfDir.eachDir { File d ->
+        if (d.name == 'services') {
+            d.eachFile { File f -> if (f.name.startsWith('org.')) { f.delete() } }
+        }
+        if (d.name != 'services') { d.deleteDir() }
+    }
+
+    metaInfDir.eachFile { File f ->
+        if ('MANIFEST.MF' == f.name
+              || f.name.startsWith('org.')) { f.delete() }
+    }
+    
+    new File("$classesDir/com/semagia/mio/rdf/sesame/internal/openrdf/console").deleteDir()
+
+    new File("$classesDir/logback.xml").delete()
+
+    new File(the_jar).delete()
+}
+
+task includeRDF << {
+    enhanceClasses(sourceSets.main.classesDir)
+}
+
+task enhanceTestClasses << {
+    enhanceClasses(sourceSets.test.classesDir)
+}
+
+//jar.dependsOn includeRDF
+
+//testClasses.dependsOn enhanceTestClasses
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.rdf.sesame.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.rdf.*, !com.ibm.icu.*, !org.mozilla.intl.*, *'
+    }
+}

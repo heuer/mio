@@ -1,0 +1,75 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.9.6'
+
+projectName = 'Semagia MIO'
+projectDescription = 'Semagia MIO' //TODO
+
+apply from: "$rootDir/shared/commons.gradle"
+
+configurations {
+    osgi
+    testsuite
+}
+
+dependencies {
+    osgi 'org.osgi:org.osgi.core:4.0.1'
+    
+    compile 'thaiopensource:jing:20030619'
+
+    testCompile 'org.tmapi:tmapi:2.0.2',
+                'org.tinytim:tinytim:2.0.1-SNAPSHOT',
+                'net.ontopia:ontopia-engine:5.1.2',
+                'net.ontopia:ontopia-mio:0.1.0-SNAPSHOT'
+    // While we do not want to expose OSGi as a depedency, we need the lib for Eclipse in the classpath
+    testCompile 'org.osgi:org.osgi.core:4.0.1'
+}
+
+sourceSets {
+    main {
+      compileClasspath = sourceSets.main.compileClasspath + configurations.osgi
+    }
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.*, com.thaiopensource.*;resolution:=optional, *'
+    }
+}
+
+task testJar(type: Jar, dependsOn: compileTestJava) {
+    from sourceSets.test.classesDir
+    baseName = jar.baseName + '-tests'
+}
+
+artifacts {
+    archives jar
+    testsuite testJar
+}
+
+uploadTestsuite {
+    repositories.mavenDeployer {
+        repository(url: "file://$buildDir/maven-repo/")
+        pom.project {
+            name project.projectName
+            description project.projectDescription
+            url project.projectURL
+            
+            organization {
+                name project.vendorName
+                url project.vendorURL
+            }
+            licenses {
+               license {
+                  name project.licenseName
+                  url project.licenseURL
+               }
+            }
+        }
+    }
+}

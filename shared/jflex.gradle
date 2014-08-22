@@ -1,0 +1,10 @@
+/**
+ * JFlex task
+ */
+
+apply plugin: 'java'
+
+task generateLexer << {
+    ant.taskdef classname: 'JFlex.anttask.JFlexTask', name: 'jflex', classpath: configurations.build.asPath
+    ant.jflex(file: 'src/grammar/' + project.flexSource, destdir: 'src/main/java/')
+}

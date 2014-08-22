@@ -1,0 +1,25 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+group = 'com.semagia.mio'
+version = '0.1.0'
+
+projectName = 'Semagia MIO Snello Topic Maps (STM)'
+projectDescription = 'Semagia MIO Snello Topic Maps (STM)' //TODO
+
+flexSource = 'RealSnelloLexer.flex'
+jaySource = 'RealSnelloParser.y'
+jayTarget = '/com/semagia/mio/stm/RealSnelloParser.java'
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+compileJava.dependsOn generateParser, generateLexer
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.stm.internal.osgi.Activator'
+    }
+}

@@ -1,0 +1,24 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.9.6'
+
+projectName = 'Semagia MIO XML Topic Maps (XTM)'
+projectDescription = 'Semagia MIO XML Topic Maps (XTM)' //TODO
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+dependencies {
+    runtime 'thaiopensource:jing:20030619'
+    testRuntime project(':mio-ctm'), project(':mio-jtm')
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.xtm.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.xtm.*, *'
+    }
+}

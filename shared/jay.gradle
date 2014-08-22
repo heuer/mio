@@ -1,0 +1,15 @@
+/**
+ * Jay task
+ */
+task generateParser << {
+    // Generate the parser from jay
+    ant.java(classpath: configurations.build.asPath,
+              classname: 'jay.Main',
+              output: 'src/main/java/' + project.jayTarget,
+              error: 'yerror.log',
+              fork: 'true') {
+      arg value: '-v'
+      arg value: 'src/grammar/' + project.jaySource
+      arg value: '../shared/jay/skeleton.java'
+    }
+}

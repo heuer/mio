@@ -1,0 +1,23 @@
+/*
+ * Gradle 0.9 build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.9.5'
+
+projectName = 'Semagia MIO TM/XML Topic Maps (TM/XML)'
+projectDescription = 'Semagia MIO TM/XML Topic Maps (TM/XML)' //TODO
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+dependencies {
+    runtime 'thaiopensource:jing:20030619'
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.tmxml.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.tmxml.*, *'
+    }
+}

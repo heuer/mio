@@ -1,0 +1,19 @@
+/*
+ * Gradle build file.
+ * 
+ * - Download Gradle from <http://www.gradle.org/>
+ * - Execute gradle build
+ */
+version = '0.1.0'
+
+projectName = 'Semagia MIO Binary Topic Maps (BTM)'
+projectDescription = 'Semagia MIO Binary Topic Maps (BTM)' //TODO
+
+apply from: "$rootDir/shared/deserializer.gradle"
+
+jar {
+    manifest {
+        instruction 'Bundle-Activator', 'com.semagia.mio.btm.internal.osgi.Activator'
+        instruction 'Import-Package', '!com.semagia.mio.btm.*, *'
+    }
+}

@@ -1,0 +1,75 @@
+# ===========================================================================
+#
+# XML Topic Maps (XTM) 1.0
+#
+# This schema was adapted from the XTM 1.1 RELAX-NG schema found at
+# <http://www.isotopicmaps.org/sam/sam-xtm/2005-07-20/>, created by
+# Lars Marius Garshol and Graham Moore
+# 
+# Author:   Lars Heuer <heuer[at]semagia.com>
+#
+# License:  Public Domain
+#
+# ===========================================================================
+
+# --- Common declarations
+
+default namespace = "http://www.topicmaps.org/xtm/1.0/"
+namespace xlink = "http://www.w3.org/1999/xlink"
+namespace xtm = "http://www.topicmaps.org/xtm/1.0/"
+
+datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
+
+start = topicMap
+
+topic-reference = topicRef | resourceRef | subjectIndicatorRef
+
+id = attribute id { xsd:ID }
+
+href = attribute xlink:href { xsd:anyURI }
+
+type = attribute xlink:type { "simple" }
+
+# --- The schema
+
+topicMap = element topicMap { id?, xmlbase?, (topic | association | mergeMap)* }
+
+xmlbase = attribute xml:base { xsd:anyURI }
+
+topic = element topic { id, xmlbase?, instanceOf*, subjectIdentity?, (baseName | occurrence)* }
+
+subjectIdentity = element subjectIdentity { id?, topic-reference* }
+
+baseName = element baseName { id?, xmlbase?, scope?, baseNameString, variant* }
+
+baseNameString = element baseNameString { id?, text }
+
+variant = element variant { id?, xmlbase?, parameters, variantName?, variant* }
+
+variantName = element variantName { id?, (resourceRef | resourceData) }
+
+parameters = element parameters { id?, topic-reference+ }
+
+scope = element scope { id?, topic-reference+ }
+
+instanceOf = element instanceOf { id?, topic-reference }
+
+occurrence = element occurrence { id?, xmlbase?, instanceOf?, scope?, ( resourceRef | resourceData ) }
+
+resourceData = element resourceData { id?, text }
+
+association = element association { id?, xmlbase?, instanceOf?, scope?, member+ }
+
+member = element member { id?, roleSpec?, topic-reference* }
+
+roleSpec = element roleSpec { id?, topic-reference }
+
+topicRef = element topicRef { id?, href, type? }
+
+subjectIndicatorRef = element subjectIndicatorRef { id?, href, type? }
+
+resourceRef = element resourceRef { id?, href, type? }
+
+mergeMap = element mergeMap { id?, href, type?, topic-reference* }
+
+# --- End of schema

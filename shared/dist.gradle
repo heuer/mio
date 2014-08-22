@@ -1,0 +1,32 @@
+/*
+ * Distribution.
+ */
+apply plugin: 'java'
+
+task dist(dependsOn: [assemble, test]) << {
+    def base_name = "$archivesBaseName-${project.version}"
+    def base = "$distsDir/" + base_name
+    def zips = "$buildDir/dist/$base_name"
+    copy {
+        into base
+        from(libsDir)
+        from(projectDir) {
+            include 'README.txt'
+            include 'LICENSE.txt'
+            include 'CHANGES.txt'
+            include 'NOTICE.txt'
+        }
+        from("$projectDir/src") {
+            into 'src'
+            exclude 'grammar/**'
+            exclude '**/*.bak'
+        }
+        into('lib') {
+            from configurations.runtime
+        }
+    }
+    ant {
+        tar destfile: zips + '.tar.gz', basedir: distsDir, compression: 'gzip', longfile: 'gnu'
+        zip destfile: zips + '.zip', basedir: distsDir
+    }
+}
