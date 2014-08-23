@@ -22,10 +22,11 @@ ext.jayTarget = '/com/semagia/mio/rdf/crtm/RealCRTMParser.java'
 
 apply from: "$rootDir/shared/deserializer.gradle"
 
-ext.sesameLib = 'lib/openrdf-sesame-2.4.0-onejar.jar'
+ext.sesameLib = 'lib/openrdf-sesame-2.7.13-onejar.jar'
 ext.rdfaLib = 'lib/rdfa-0.1.1.jar'
+ext.jarjar = 'lib/jarjar-1.4.jar'
 
-ext.libs = [sesameLib, rdfaLib]
+ext.libs = [ext.sesameLib, ext.rdfaLib, ext.jarjar]
 
 repositories {
     // jarjar
@@ -33,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    buildproject 'com.tonicsystems:jarjar:1.0'
+    //buildproject 'com.tonicsystems:jarjar:1.0'
 
     compile files(libs)
 }
@@ -47,7 +48,7 @@ private def enhanceClasses(File classesDir) {
     ant {
         taskdef name: 'jarjar', 
             classname: 'com.tonicsystems.jarjar.JarJarTask', 
-            classpath: configurations.build.asPath
+            classpath: configurations.buildproject.asPath
 
         jarjar(jarfile: the_jar) {
             fileset dir: classesDir
@@ -79,7 +80,8 @@ private def enhanceClasses(File classesDir) {
     }
     
     new File("$classesDir/com/semagia/mio/rdf/sesame/internal/openrdf/console").deleteDir()
-
+    new File("$classesDir/com/semagia/mio/rdf/sesame/internal/openrdf/repository").deleteDir()
+    new File("$classesDir/com/semagia/mio/rdf/sesame/internal/aduna/app").deleteDir()
     new File("$classesDir/logback.xml").delete()
 
     new File(the_jar).delete()
@@ -93,9 +95,9 @@ task enhanceTestClasses << {
     enhanceClasses(sourceSets.test.output.classesDir)
 }
 
-//jar.dependsOn includeRDF
+jar.dependsOn includeRDF
 
-//testClasses.dependsOn enhanceTestClasses
+testClasses.dependsOn enhanceTestClasses
 
 jar {
     manifest {
