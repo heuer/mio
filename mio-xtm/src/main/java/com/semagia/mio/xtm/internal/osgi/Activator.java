@@ -30,10 +30,10 @@ import com.semagia.mio.xtm.XTMDeserializerFactory;
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
  * @version $Rev: 462 $ - $Date: 2010-09-08 01:20:13 +0200 (Mi, 08 Sep 2010) $
  */
-@SuppressWarnings("unchecked")
 public class Activator implements BundleActivator {
 
-    private static final Class[] _FACTORIES = new Class[] {
+	@SuppressWarnings("unchecked")
+    private static final Class<IDeserializerFactory>[] _FACTORIES = new Class[] {
         XTM10DeserializerFactory.class, XTM20DeserializerFactory.class,
         XTM21DeserializerFactory.class, XTMDeserializerFactory.class
     };
