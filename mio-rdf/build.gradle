@@ -25,8 +25,9 @@ apply from: "$rootDir/shared/deserializer.gradle"
 ext.sesameLib = 'lib/openrdf-sesame-2.7.13-onejar.jar'
 ext.rdfaLib = 'lib/rdfa-0.1.1.jar'
 ext.jarjar = 'lib/jarjar-1.4.jar'
+ext.commonsioLib = 'lib/commons-io-2.4.jar'
 
-ext.libs = [ext.sesameLib, ext.rdfaLib, ext.jarjar]
+ext.libs = [ext.sesameLib, ext.rdfaLib, ext.jarjar, ext.commonsioLib]
 
 repositories {
     // jarjar
@@ -54,7 +55,9 @@ private def enhanceClasses(File classesDir) {
             fileset dir: classesDir
             zipfileset src: ext.sesameLib, excludes: 'META-INF/**'
             zipfileset src: ext.rdfaLib, excludes: 'META-INF/**'
+            zipfileset src: ext.commonsioLib, excludes: 'META-INF/**'
 
+            rule pattern: "org.apache.commons.io.**", result: "com.semagia.mio.rdf.sesame.internal.commonsio.@1"
             rule pattern: "info.aduna.**", result: "com.semagia.mio.rdf.sesame.internal.aduna.@1"
             rule pattern: "org.openrdf.**", result: "com.semagia.mio.rdf.sesame.internal.openrdf.@1"
             rule pattern: "net.rootdev.**", result: "com.semagia.mio.rdf.sesame.internal.rdfa.@1"
