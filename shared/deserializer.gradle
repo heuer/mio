@@ -11,6 +11,17 @@ configurations {
     osgi
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'de.undercouch:gradle-download-task:1.0'
+    }
+}
+
+import de.undercouch.gradle.tasks.download.Download
+
 dependencies {
     osgi 'org.osgi:org.osgi.core:4.0.1'
     compile project(':mio-core')
@@ -24,6 +35,22 @@ sourceSets {
     main {
       compileClasspath = sourceSets.main.compileClasspath + configurations.osgi
     }
+}
+
+def cxtmZip = new File("$rootDir/shared/cxtm/", 'cxtm.zip')
+
+task downloadCXTMArchive(type: Download) {
+    src 'https://github.com/heuer/cxtm/archive/master.zip'
+    dest cxtmZip
+}
+
+task downloadAndUnzipCXTMTests(dependsOn: downloadCXTMArchive, type: Copy) {
+    def unpacked_dir = new File("$rootDir/shared/cxtm/cxtm-master/")
+    from zipTree(downloadCXTMArchive.dest)
+    into "$rootDir/shared/cxtm/"
+    from unpacked_dir
+    into "$rootDir/shared/cxtm/"
+    unpacked_dir.deleteDir()
 }
 
 task copyCXTMTests(type: Copy) {
@@ -43,6 +70,10 @@ task ontopiaTests(type: Test, dependsOn: jar) {
 }
 
 build.dependsOn ontopiaTests
+
+if (!cxtmZip.exists()) {
+    copyCXTMTests.dependsOn(downloadAndUnzipCXTMTests)
+}
 
 processTestResources.dependsOn copyCXTMTests
 
