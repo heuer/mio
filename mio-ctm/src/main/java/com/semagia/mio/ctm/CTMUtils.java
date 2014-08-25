@@ -17,6 +17,10 @@ package com.semagia.mio.ctm;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.semagia.mio.voc.XSD;
 
@@ -31,6 +35,7 @@ public final class CTMUtils {
     static final String CTM_INTEGER = "http://psi.topicmaps.org/iso13250/ctm-integer";
 
     private static final char[] _TRIPLE_QUOTES = new char[] {'"', '"', '"'};
+    private static Pattern _VARIABLE_PATTERN = Pattern.compile("\\$[^\\s,\\(\\)<]+");
 
     private CTMUtils() {
         // noop.
@@ -176,6 +181,22 @@ public final class CTMUtils {
                 || CTM_INTEGER.equals(datatype);
     }
 
+    public static List<String> findVariables(final String str) {
+        return findVariables(str, false);
+    }
+
+    public static List<String> findVariables(final String str, final boolean omitDollar) {
+        final Matcher m = _VARIABLE_PATTERN.matcher(str);
+        List<String> variables = new ArrayList<String>(2);
+        while (m.find()) {
+            String ident = m.group().substring(1);
+            if (isValidId(ident)) {
+                variables.add(omitDollar ? ident : m.group());
+            }
+        }
+        return variables;
+    }
+
     /**
      * Serializes the provided {@code string}.
      * <p>
@@ -186,7 +207,7 @@ public final class CTMUtils {
      * @param string The string to write.
      * @throws IOException In case of an error.
      */
-    public static void writeString(final Writer out, final String string) throws IOException {
+    static void writeString(final Writer out, final String string) throws IOException {
         final char[] ch = string.toCharArray();
         final int len = ch.length;
         // Avoid escaping of "
@@ -227,7 +248,7 @@ public final class CTMUtils {
      * @return An unescaped string.
      * @throws IllegalArgumentException In case of an invalid Unicode escape sequence.
      */
-    public static final String unescapeString(final String value) throws IllegalArgumentException {
+    static final String unescapeString(final String value) throws IllegalArgumentException {
         int backSlash = value.indexOf('\\');
         if (backSlash == -1) {
             return value;

@@ -15,6 +15,8 @@
  */
 package com.semagia.mio.ctm;
 
+import java.util.List;
+
 import com.semagia.mio.voc.XSD;
 
 import junit.framework.TestCase;
@@ -83,5 +85,25 @@ public class TestCTMUtils extends TestCase {
         assertTrue(CTMUtils.isNativeDatatype(XSD.INTEGER));
         assertTrue(CTMUtils.isNativeDatatype(XSD.DECIMAL));
         assertTrue(CTMUtils.isNativeDatatype(CTMUtils.CTM_INTEGER));
+    }
+
+    public void testFindVariables() {
+        final String s = "$a, $b, djddjd, $c, $______-d";
+        final String[] expected = {"$a", "$b", "$c", "$______-d"};
+        List<String> res = CTMUtils.findVariables(s);
+        assertEquals(expected.length, res.size());
+        for (int i=0; i<expected.length; i++) {
+            assertEquals(expected[i], res.get(i));
+        }
+    }
+
+    public void testFindVariablesOmitDollar() {
+        final String s = "$a, $b, djddjd, $c, $______-d";
+        final String[] expected = {"a", "b", "c", "______-d"};
+        List<String> res = CTMUtils.findVariables(s, true);
+        assertEquals(expected.length, res.size());
+        for (int i=0; i<expected.length; i++) {
+            assertEquals(expected[i], res.get(i));
+        }
     }
 }

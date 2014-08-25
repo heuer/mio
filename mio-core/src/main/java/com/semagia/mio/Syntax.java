@@ -28,7 +28,6 @@ import java.util.List;
  * change in the future.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 621 $ - $Date: 2011-05-21 11:51:54 +0200 (Sa, 21 Mai 2011) $
  */
 public final class Syntax {
 
@@ -360,6 +359,46 @@ public final class Syntax {
             }
         }
         return defaultSyntax;
+    }
+
+    /**
+     * Returns a syntax by a filename.
+     * <p>
+     * This method expects that the file name is indicated by a dot.
+     * </p>
+     * <p>
+     * Returns the same result as 
+     * <code>Syntax.forFilename(filename, null)</code>
+     * </p>
+     *
+     * @param filename The filename.
+     * @return A syntax for the specified <tt>filename</tt> or 
+     *          <tt>null</tt> if no syntax for the specified 
+     *          <tt>filename</tt> exists.
+     */
+    public static final Syntax forFilename(final String filename) {
+        return forFilename(filename, null);
+    }
+
+    /**
+     * Returns a syntax by a filename.
+     * <p>
+     * This method expects that the file name is indicated by a dot.
+     * </p>
+     * <p>
+     * Returns the same result as 
+     * <code>Syntax.forFileExtension(filename.substring(filename.lastIndexOf('.') + 1), defaultSyntax)</code>
+     * </p>
+     *
+     * @param filename The filename.
+     * @param defaultSyntax The syntax to return if no appropiate syntax was 
+     *                      found.
+     * @return A syntax for the specified <tt>filename</tt> or 
+     *          <tt>null</tt> if no syntax for the specified 
+     *          <tt>filename</tt> exists.
+     */
+    public static final Syntax forFilename(final String filename, Syntax defaultSyntax) {
+        return forFileExtension(filename.substring(filename.lastIndexOf('.') + 1), defaultSyntax);
     }
 
     /**
