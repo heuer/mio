@@ -398,7 +398,8 @@ public final class Syntax {
      *          <tt>filename</tt> exists.
      */
     public static final Syntax forFilename(final String filename, Syntax defaultSyntax) {
-        return forFileExtension(filename.substring(filename.lastIndexOf('.') + 1), defaultSyntax);
+        final int idx = filename.lastIndexOf('.');
+        return idx > 0 ? forFileExtension(filename.substring(idx + 1), defaultSyntax) : defaultSyntax;
     }
 
     /**
