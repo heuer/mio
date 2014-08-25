@@ -37,4 +37,10 @@ public class TestSyntax extends TestCase {
         assertEquals(Syntax.CRTM, Syntax.forFileExtension("crtm", null));
     }
 
+    public void testForFilename() {
+        assertEquals(null, Syntax.forFilename("the-not-yet-invented-syntax"));
+        assertEquals(Syntax.N3, Syntax.forFilename("a-file.here.n3"));
+        assertEquals(Syntax.N3, Syntax.forFilename("a.name.here.n3", null));
+        assertEquals(Syntax.CRTM, Syntax.forFilename("xy.crtm", null));
+    }
 }
