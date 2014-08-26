@@ -1,2 +1,8 @@
 *.class
-build/*
+yerror.log
+y.output
+*/build/*
+*/bin/*
+shared/cxtm/*
+Real*.java
+.*
