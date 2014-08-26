@@ -155,6 +155,7 @@ public abstract class AbstractHamsterMapHandler<T> extends HamsterHandler<T> imp
 
     @Override
     public void endAssociation() throws MIOException {
+        @SuppressWarnings("unchecked")
         Association assoc = (Association) _leaveStatePopConstruct(ASSOCIATION);
         if (assoc.type == null) {
             throw new MIOException("The association's type must not be null");
@@ -176,6 +177,7 @@ public abstract class AbstractHamsterMapHandler<T> extends HamsterHandler<T> imp
 
     @Override
     public void endName() throws MIOException {
+        @SuppressWarnings("unchecked")
         Name name = (Name) _leaveStatePopConstruct(NAME);
         if (name.value == null) {
             throw new MIOException("The name's value must not be null");
@@ -196,6 +198,7 @@ public abstract class AbstractHamsterMapHandler<T> extends HamsterHandler<T> imp
 
     @Override
     public void endOccurrence() throws MIOException {
+        @SuppressWarnings("unchecked")
         Occurrence occ = (Occurrence) _leaveStatePopConstruct(OCCURRENCE);
         if (occ.type == null) {
             throw new MIOException("The type of the occurrence must not be null");
@@ -223,6 +226,7 @@ public abstract class AbstractHamsterMapHandler<T> extends HamsterHandler<T> imp
 
     @Override
     public void endRole() throws MIOException {
+        @SuppressWarnings("unchecked")
         Role role = (Role) _leaveStatePopConstruct(ROLE);
         if (role.type == null) {
             throw new MIOException("The type of the role must not be null");
@@ -242,6 +246,7 @@ public abstract class AbstractHamsterMapHandler<T> extends HamsterHandler<T> imp
 
     @Override
     public void endVariant() throws MIOException {
+        @SuppressWarnings("unchecked")
         Variant variant = (Variant) _leaveStatePopConstruct(VARIANT);
         assert _state() == NAME;
         if (variant.value == null) {
@@ -494,26 +499,32 @@ public abstract class AbstractHamsterMapHandler<T> extends HamsterHandler<T> imp
         return (ITyped<T>) _peek();
     }
 
+    @SuppressWarnings("unchecked")
     private TMConstruct peekConstruct() {
         return (TMConstruct) _peek();
     }
 
+    @SuppressWarnings("unchecked")
     private Association peekAssociation() {
         return (Association) _peek();
     }
 
+    @SuppressWarnings("unchecked")
     private Role peekRole() {
         return (Role) _peek();
     }
 
+    @SuppressWarnings("unchecked")
     private Occurrence peekOccurrence() {
         return (Occurrence) _peek();
     }
 
+    @SuppressWarnings("unchecked")
     private Name peekName() {
         return (Name) _peek();
     }
 
+    @SuppressWarnings("unchecked")
     private Variant peekVariant() {
         return (Variant) _peek();
     }

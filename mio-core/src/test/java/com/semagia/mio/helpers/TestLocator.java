@@ -25,10 +25,6 @@ import junit.framework.TestCase;
  */
 public class TestLocator extends TestCase {
 
-    private String reference(String reference) {
-        return Locator.create(reference).getReference();
-    }
-
     public void testLocator() {
         final Locator loc = Locator.create("http://www.semagia.com/");
         assertEquals("http://www.semagia.com/", loc.getReference());
