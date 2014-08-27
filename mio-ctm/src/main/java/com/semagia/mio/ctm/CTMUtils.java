@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2008 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,16 @@ import com.semagia.mio.voc.XSD;
  * CTM utility functions.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 603 $ - $Date: 2011-01-18 23:04:34 +0100 (Di, 18 Jan 2011) $
  */
 public final class CTMUtils {
 
     static final String CTM_INTEGER = "http://psi.topicmaps.org/iso13250/ctm-integer";
 
     private static final char[] _TRIPLE_QUOTES = new char[] {'"', '"', '"'};
+
+    // Variable names are more complex, just match everything which starts with $ and check in findVariables if it's a valid name.
     private static Pattern _VARIABLE_PATTERN = Pattern.compile("\\$[^\\s,\\(\\)<]+");
+
 
     private CTMUtils() {
         // noop.
@@ -181,10 +183,29 @@ public final class CTMUtils {
                 || CTM_INTEGER.equals(datatype);
     }
 
+    /**
+     * Returns all variables contained in the provided string.
+     * 
+     * Returns the same result as {@link #findVariables(String, boolean)} 
+     * with {@code omitDollar = false}.
+     * 
+     * @param str A string.
+     * @return A list of variable names ($a, $b, etc.) 
+     */
     public static List<String> findVariables(final String str) {
         return findVariables(str, false);
     }
 
+    /**
+     * Returns all variables contained in the provided string.
+     * 
+     * If {@code omitDollar} is {@code true}, the returned variables names 
+     * are returned without the {@code $} prefix ({@code $a -> a}).
+     * 
+     * @param str A string.
+     * @param omitDollar Indicates if the {@code $} prefix should be omitted.
+     * @return A list of variable names.
+     */
     public static List<String> findVariables(final String str, final boolean omitDollar) {
         final Matcher m = _VARIABLE_PATTERN.matcher(str);
         List<String> variables = new ArrayList<String>(2);
