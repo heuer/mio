@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,6 @@ import static com.semagia.mio.xtm.XTM10ContentHandler.RESOURCE_REF;
  * and <a href="http://www.itscj.ipsj.or.jp/sc34/open/1378.htm">XTM 2.1</a> topic maps.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 462 $ - $Date: 2010-09-08 01:20:13 +0200 (Mi, 08 Sep 2010) $
  */
 final class XTM2ContentHandler extends AbstractXTMContentHandler {
 

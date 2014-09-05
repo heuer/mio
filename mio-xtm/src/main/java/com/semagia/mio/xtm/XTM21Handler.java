@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2008 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ import com.semagia.mio.voc.XSD;
  * <a href="http://www.itscj.ipsj.or.jp/sc34/open/1378.htm">XML Topic Maps (XTM) 2.1</a>.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 598 $ - $Date: 2011-01-13 22:24:26 +0100 (Do, 13 Jan 2011) $
  */
 public final class XTM21Handler extends AbstractHamsterMapHandler<IRef> {
 

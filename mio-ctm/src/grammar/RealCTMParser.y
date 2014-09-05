@@ -1,6 +1,6 @@
 %{
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,7 @@ import com.semagia.mio.MIOParseException;
  * CTM parser.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 420 $ - $Date: 2010-09-02 00:33:14 +0200 (Do, 02 Sep 2010) $
- */
+  */
 abstract class RealCTMParser extends AbstractCTMParser { 
 
     /**

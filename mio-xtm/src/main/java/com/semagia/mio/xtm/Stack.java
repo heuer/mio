@@ -15,69 +15,70 @@
  */
 package com.semagia.mio.xtm;
 
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-
 /**
  * Simple stack which is unsynchronized.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 462 $ - $Date: 2010-09-08 01:20:13 +0200 (Mi, 08 Sep 2010) $
  */
-@SuppressWarnings("serial")
-final class Stack<E> extends ArrayList<E>{
+final class Stack<E> {
 
-    private static final int _SIZE = 4;
+    private Object[] _items;
+    private int _itemCount; 
 
-    /**
-     * Creates an empty stack.
-     */
     public Stack() {
-        super(_SIZE);
+       this(8);
     }
 
-    /**
-     * Returns if the stack is empty.
-     *
-     * @return <code>true</code> if the stack is emtpy, otherwise <code>false</code>.
-     */
-    public boolean empty() {
-        return isEmpty();
+    public Stack(int initialCapacity) {
+       _itemCount = 0;
+       _items = new Object[initialCapacity];
     }
 
-    /**
-     * Removes and returns the item at the top of this stack.
-     * 
-     * @return The item at the top of this stack.
-     */
-    public E pop() {
-        if (isEmpty()) {
-            throw new EmptyStackException();
+    public boolean isEmpty() {
+        return _itemCount == 0;
+    }
+
+    public int size() {
+        return _itemCount;
+    }
+
+    @SuppressWarnings("unchecked")
+    public E get(final int index) {
+        return (E) _items[index];
+    }
+
+    public boolean contains(E obj) {
+        for (int i=0; i<_itemCount; i++) {
+            if (_items[i].equals(obj)) {
+                return true;
+            }
         }
-        return remove(size()-1);
+        return false;
     }
-
-    /**
-     * Pushes an item onto the top of the stack.
-     * 
-     * @param item The item to be pushed onto this stack.
-     * @return The item.
-     */
-    public E push(E item) {
-        add(item);
-        return item;
-    }
-
-    /**
-     * Returns the item at the top of the stack without removing it.
-     * 
-     * @return Returns the item on top of the stack.
-     */
+    
+    @SuppressWarnings("unchecked")
     public E peek() {
-        if (isEmpty()) {
-            throw new EmptyStackException();
-        }
-        return get(size() - 1);
+       if (_itemCount == 0) {
+           throw new RuntimeException("Stack is empty");
+       }
+       return (E) _items[_itemCount-1];
     }
 
+    @SuppressWarnings("unchecked")
+    public E pop() {
+       if (_itemCount == 0) {
+           throw new RuntimeException("Stack is empty");
+       }
+       return (E) _items[--_itemCount];
+    }
+
+    public void push(E item) {
+       if (_itemCount == _items.length) {
+           Object newItems[] = new Object[_itemCount*2 + 1];
+           System.arraycopy(_items, 0, newItems, 0, _itemCount);
+           _items = newItems;
+       }
+       _items[_itemCount] = item;
+       _itemCount++;
+    }
 }
