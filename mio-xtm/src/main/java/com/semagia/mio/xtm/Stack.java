@@ -90,4 +90,5 @@ final class Stack<E> {
     public void clear() {
         _itemCount = 0;
     }
+
 }

@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 public class TestStack extends TestCase {
 
     public void testStack() {
-        Stack<Something> stack = new Stack<Something>();
+        final Stack<Something> stack = new Stack<Something>();
         assertTrue(stack.isEmpty());
         try {
             stack.peek();
@@ -70,6 +70,8 @@ public class TestStack extends TestCase {
             assertEquals(x, stack.pop());
             assertEquals(i-1, stack.size());
         }
+        assertTrue(stack.isEmpty());
+        assertEquals(0, stack.size());
     }
 
     public void testInvalid() {
