@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,25 @@ import junit.framework.TestCase;
  * Tests against the stack.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 462 $ - $Date: 2010-09-08 01:20:13 +0200 (Mi, 08 Sep 2010) $
  */
 public class TestStack extends TestCase {
 
     public void testStack() {
         Stack<Something> stack = new Stack<Something>();
         assertTrue(stack.isEmpty());
+        try {
+            stack.peek();
+            fail("Expected an EmptyStackException for 'peek' on an empty stack");
+        }
+        catch (EmptyStackException ex) {
+            // noop.
+        }
+        try {
+            stack.get(0);
+        }
+        catch (IndexOutOfBoundsException ex) {
+            // noop.
+        }
         Something x = new Something();
         stack.push(x);
         assertSame(x, stack.peek());
@@ -73,11 +85,18 @@ public class TestStack extends TestCase {
             stack.pop();
             fail("Expected an EmptyStackException for 'pop' on an empty stack");
         }
-        catch (EmptyStackException ex) {
+        catch (Exception ex) {
             // noop.
         }
         try {
             stack.get(1);
+            fail("Expected an IndexOutOfBoundsException for 'get' on an empty stack");
+        }
+        catch (IndexOutOfBoundsException ex) {
+            // noop.
+        }
+        try {
+            stack.get(0);
             fail("Expected an IndexOutOfBoundsException for 'get' on an empty stack");
         }
         catch (IndexOutOfBoundsException ex) {

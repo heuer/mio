@@ -15,6 +15,8 @@
  */
 package com.semagia.mio.xtm;
 
+import java.util.EmptyStackException;
+
 /**
  * Simple stack which is unsynchronized.
  * 
@@ -44,6 +46,9 @@ final class Stack<E> {
 
     @SuppressWarnings("unchecked")
     public E get(final int index) {
+        if (index >= _itemCount) {
+            throw new IndexOutOfBoundsException();
+        }
         return (E) _items[index];
     }
 
@@ -59,7 +64,7 @@ final class Stack<E> {
     @SuppressWarnings("unchecked")
     public E peek() {
        if (_itemCount == 0) {
-           throw new RuntimeException("Stack is empty");
+           throw new EmptyStackException();
        }
        return (E) _items[_itemCount-1];
     }
@@ -80,5 +85,9 @@ final class Stack<E> {
        }
        _items[_itemCount] = item;
        _itemCount++;
+    }
+
+    public void clear() {
+        _itemCount = 0;
     }
 }
