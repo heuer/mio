@@ -74,7 +74,9 @@ final class Stack<E> {
        if (_itemCount == 0) {
            throw new RuntimeException("Stack is empty");
        }
-       return (E) _items[--_itemCount];
+       E obj = (E) _items[--_itemCount];
+       _items[_itemCount] = null;
+       return obj;
     }
 
     public void push(E item) {
@@ -85,10 +87,6 @@ final class Stack<E> {
        }
        _items[_itemCount] = item;
        _itemCount++;
-    }
-
-    public void clear() {
-        _itemCount = 0;
     }
 
 }

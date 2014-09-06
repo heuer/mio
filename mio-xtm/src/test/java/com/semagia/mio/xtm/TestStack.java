@@ -54,7 +54,7 @@ public class TestStack extends TestCase {
         stack.push(x);
         assertFalse(stack.isEmpty());
         assertEquals(1, stack.size());
-        stack.clear();
+        stack.pop();
         assertTrue(stack.isEmpty());
         for (int i=0; i < 30; i++) {
             assertEquals(i, stack.size());
