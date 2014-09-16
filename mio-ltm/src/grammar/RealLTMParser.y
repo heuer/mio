@@ -1,6 +1,6 @@
 %{
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -159,7 +159,7 @@ include_directive
 topic       : LBRACK tid { _handler.startTopic($2); _seenSLO = false; } opt_types opt_names opt_identities RBRACK
                 {
                     _handler.endTopic();
-                    $$=$2;
+                    $$ = $2;
                 }
             ;
 
@@ -213,7 +213,7 @@ name        : EQ { _handler.startName(_TOPIC_NAME); }
                     List<String> vars = $4;
                     if (vars != null) {
                         if (vars.get(0) != null) {
-                            _makeVariant(vars.get(0), _SORT_NAME);
+                            _makeVariant(vars.get(0), _sort);
                         }
                         if (vars.get(1) != null) {
                             _makeVariant(vars.get(1), _DISPLAY_NAME);
@@ -239,39 +239,39 @@ tids        : tid
                 { 
                     Collection<IRef> l = new ArrayList<IRef>();
                     l.add($1);
-                    $$=l;
+                    $$ = l;
                 }
-            | tids tid                      { $1.add($2); $$=$1; }
+            | tids tid                      { $1.add($2); $$ = $1; }
             ;
 
-opt_sort_display:                           { $$=null; }
+opt_sort_display:                           { $$ = null; }
             | sortname displayname
                 { 
                     List<String> l = new ArrayList<String>(2);
                     l.add($1);
                     l.add($2);
-                    $$=l;
+                    $$ = l;
                 }
             | sortname
                 { 
                     List<String> l = new ArrayList<String>(2);
                     l.add($1);
                     l.add(null);
-                    $$=l;
+                    $$ = l;
                 }
             | SEMI displayname
                 { 
                     List<String> l = new ArrayList<String>(2);
                     l.add(null);
                     l.add($2);
-                    $$=l;
+                    $$ = l;
                 }
             ;
 
 sortname    : SEMI string   { $$=$2.getValue(); }
             ;
 
-displayname : SEMI string   { $$=$2.getValue(); }
+displayname : SEMI string   { $$ = $2.getValue(); }
             ;
 
 opt_variants:
@@ -325,8 +325,8 @@ player      : tid               { _handler.topicRef($1); _handler.endPlayer(); }
             | topic             { _handler.endPlayer(); }
             ;
 
-opt_type    :                   { $$=_ROLE; }
-            | COLON tid         { $$=$2; }
+opt_type    :                   { $$ = _ROLE; }
+            | COLON tid         { $$ = $2; }
             ;
 
 occurrence  : LCURLY tid COMMA tid COMMA resource RCURLY opt_scope opt_reifier
@@ -348,11 +348,11 @@ occurrence  : LCURLY tid COMMA tid COMMA resource RCURLY opt_scope opt_reifier
                 }
             ;
 
-opt_scope   :                   { $$=null; }
-            | scope             { $$=$1; }
+opt_scope   :                   { $$ = null; }
+            | scope             { $$ = $1; }
             ;
 
-scope       : SLASH themes      { $$=$2; }
+scope       : SLASH themes      { $$ = $2; }
             ;
 
 themes      : tid                { Collection<IRef> tids = new ArrayList<IRef>(); tids.add($1); $$ = tids; }
@@ -364,11 +364,11 @@ opt_reifier :                   { $$ = null; }
             | TILDE IDENT       { $$ = $2; }
             ;
 
-resource    : STRING            { $$=_createIRI($1); }
-            | DATA              { $$=_createData($1); }
+resource    : STRING            { $$ = _createIRI($1); }
+            | DATA              { $$ = _createData($1); }
             ;
 
-string      : STRING            { $$=_createString($1); }
+string      : STRING            { $$ = _createString($1); }
             ;
 
 %%

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,16 +44,17 @@ import com.semagia.mio.voc.XTM10;
  * Abstract LTM parser which provides just logic, but is not grammar-aware.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 467 $ - $Date: 2010-09-08 12:17:40 +0200 (Mi, 08 Sep 2010) $
  */
 abstract class AbstractLTMParser {
 
     protected SimpleMapHandler _handler;
 
-    protected static final IRef _DISPLAY_NAME = Ref.createSubjectIdentifier(XTM10.DISPLAY);
-    protected static final IRef _SORT_NAME = Ref.createSubjectIdentifier(XTM10.SORT);
-    protected static final IRef _TOPIC_NAME = Ref.createSubjectIdentifier(TMDM.TOPIC_NAME);
-    protected static final IRef _ROLE = Ref.createSubjectIdentifier(XTM10.ROLE);
+    protected static final IRef 
+        _DISPLAY_NAME = Ref.createSubjectIdentifier(XTM10.DISPLAY),
+        _XTM_SORT = Ref.createSubjectIdentifier(XTM10.SORT),
+        _TMDM_SORT = Ref.createSubjectIdentifier(TMDM.SORT),
+        _TOPIC_NAME = Ref.createSubjectIdentifier(TMDM.TOPIC_NAME),
+        _ROLE = Ref.createSubjectIdentifier(XTM10.ROLE);
 
     private Map<String, String> _sidPrefixes;
     private Map<String, String> _sloPrefixes;
@@ -69,12 +70,14 @@ abstract class AbstractLTMParser {
     private Context _context;
     private boolean _isSubordinate;
     private IPrefixListener _listener;
+    protected IRef _sort;
 
     public AbstractLTMParser() {
         _sidPrefixes = new HashMap<String, String>();
         _sloPrefixes = new HashMap<String, String>();
         _context = new Context();
         _included = new ArrayList<Locator>();
+        _sort = _TMDM_SORT;
     }
 
     /**
@@ -119,6 +122,7 @@ abstract class AbstractLTMParser {
 
     public void setLegacyMode(final boolean enableLegacy) {
         _legacy = enableLegacy;
+        _sort = enableLegacy ? _XTM_SORT : _TMDM_SORT;
     }
 
     public void setIgnoreMergemap(final boolean ignore) {
