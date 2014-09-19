@@ -27,7 +27,6 @@ import com.semagia.mio.MIOException;
 import com.semagia.mio.Property;
 import com.semagia.mio.Source;
 import com.semagia.mio.helpers.Ref;
-import com.semagia.mio.utils.xml.SAXXMLWriter;
 import com.semagia.mio.voc.TMDM;
 import com.semagia.mio.voc.XSD;
 
