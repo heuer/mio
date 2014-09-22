@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import com.semagia.mio.voc.XSD;
  * and creates templates.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 final class TemplateScopeHandler implements IContentHandler {
 
@@ -468,7 +467,7 @@ final class TemplateScopeHandler implements IContentHandler {
     /**
      * Represents a CTM template invocation.
      */
-    public static final class TemplateInvocation {
+    static final class TemplateInvocation {
         
         private static final IReference[] _EMPTY_REFS = new IReference[0];
         
