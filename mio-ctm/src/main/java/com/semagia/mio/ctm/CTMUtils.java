@@ -35,7 +35,8 @@ public final class CTMUtils {
 
     private static final char[] _TRIPLE_QUOTES = new char[] {'"', '"', '"'};
 
-    // Variable names are more complex, just match everything which starts with $ and check in findVariables if it's a valid name.
+    // Variable names are more complex, just match everything which 
+    // starts with $ and check in findVariables if it's a valid (variable) name.
     private static Pattern _VARIABLE_PATTERN = Pattern.compile("\\$[^\\s,\\(\\)<]+");
 
 
@@ -208,11 +209,14 @@ public final class CTMUtils {
      */
     public static List<String> findVariables(final String str, final boolean omitDollar) {
         final Matcher m = _VARIABLE_PATTERN.matcher(str);
-        List<String> variables = new ArrayList<String>(2);
+        final List<String> variables = new ArrayList<String>(2);
         while (m.find()) {
-            String ident = m.group().substring(1);
+            final String ident = m.group().substring(1);
             if (isValidId(ident)) {
-                variables.add(omitDollar ? ident : m.group());
+                final String variable = omitDollar ? ident : m.group();
+                if (!variables.contains(variable)) {
+                    variables.add(variable);
+                }
             }
         }
         return variables;

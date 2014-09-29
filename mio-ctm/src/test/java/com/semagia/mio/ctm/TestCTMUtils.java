@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import junit.framework.TestCase;
  * Tests against {@link CTMUtils}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 604 $ - $Date: 2011-01-18 23:36:52 +0100 (Di, 18 Jan 2011) $
  */
 public class TestCTMUtils extends TestCase {
 
@@ -99,6 +98,16 @@ public class TestCTMUtils extends TestCase {
 
     public void testFindVariablesOmitDollar() {
         final String s = "$a, $b, djddjd, $c, $______-d";
+        final String[] expected = {"a", "b", "c", "______-d"};
+        List<String> res = CTMUtils.findVariables(s, true);
+        assertEquals(expected.length, res.size());
+        for (int i=0; i<expected.length; i++) {
+            assertEquals(expected[i], res.get(i));
+        }
+    }
+
+    public void testFindVariablesOmitDuplicates() {
+        final String s = "$a, $b, ddd $a djddjd, $c, $______-d";
         final String[] expected = {"a", "b", "c", "______-d"};
         List<String> res = CTMUtils.findVariables(s, true);
         assertEquals(expected.length, res.size());
