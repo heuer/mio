@@ -29,6 +29,14 @@ import com.semagia.mio.MIOParseException;
   */
 abstract class RealCTMParser extends AbstractCTMParser { 
 
+    protected RealCTMParser() {
+        super();
+    }
+
+    protected RealCTMParser(final IContentHandler contentHandler) {
+        super(contentHandler);
+    }
+
     /**
      * Returns a modifiable (!) list of refs
      */

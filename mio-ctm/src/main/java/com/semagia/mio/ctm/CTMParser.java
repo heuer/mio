@@ -30,6 +30,14 @@ import com.semagia.mio.ctm.CTMLexer;
  */
 final class CTMParser extends RealCTMParser {
 
+    CTMParser() {
+        super();
+    }
+
+    CTMParser(IContentHandler contentHandler) {
+        super(contentHandler);
+    }
+
     /**
      * Reads the CTM instance from the specified <code>reader</code>.
      *
