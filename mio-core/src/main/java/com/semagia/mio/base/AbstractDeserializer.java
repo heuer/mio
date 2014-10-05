@@ -17,7 +17,7 @@ package com.semagia.mio.base;
 
 import java.io.IOException;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.IDeserializer;
 import com.semagia.mio.IMapHandler;
 import com.semagia.mio.MIOException;
@@ -42,7 +42,6 @@ import com.semagia.mio.Source;
  * </p>
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 607 $ - $Date: 2011-01-20 02:28:15 +0100 (Do, 20 Jan 2011) $
  */
 public abstract class AbstractDeserializer implements IDeserializer {
 
@@ -75,8 +74,8 @@ public abstract class AbstractDeserializer implements IDeserializer {
      */
     @Override
     public void parse(final Source src) throws IOException, MIOException {
-        if (getContext() == null) {
-            setContext(new Context());
+        if (getIRIContext() == null) {
+            setIRIContext(new IRIContext());
         }
         if (_handler == null) {
             throw new IllegalStateException("The input handler was not set");

@@ -23,7 +23,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.Collection;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.MIOException;
 import com.semagia.mio.Property;
 import com.semagia.mio.Source;
@@ -135,7 +135,7 @@ final class LTMDeserializer extends AbstractDefaultDeserializer {
      * @see com.semagia.mio.IDeserializer#getContext()
      */
     @Override
-    public Context getContext() {
+    public IRIContext getIRIContext() {
         return _parser.getContext();
     }
 
@@ -143,7 +143,7 @@ final class LTMDeserializer extends AbstractDefaultDeserializer {
      * @see com.semagia.mio.IDeserializer#setContext(com.semagia.mio.Context)
      */
     @Override
-    public void setContext(final Context ctx) {
+    public void setIRIContext(final IRIContext ctx) {
         _parser.setContext(ctx);
     }
 

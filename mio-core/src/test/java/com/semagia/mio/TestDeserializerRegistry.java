@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import junit.framework.TestCase;
  * Tests against the {@link DeserializerRegistry}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 607 $ - $Date: 2011-01-20 02:28:15 +0100 (Do, 20 Jan 2011) $
  */
 public class TestDeserializerRegistry extends TestCase {
 
@@ -89,7 +88,7 @@ public class TestDeserializerRegistry extends TestCase {
     private static class NoopDeserializer implements IDeserializer {
 
         @Override
-        public Context getContext() {
+        public IRIContext getIRIContext() {
             return null;
         }
 
@@ -98,7 +97,7 @@ public class TestDeserializerRegistry extends TestCase {
         }
 
         @Override
-        public void setContext(Context ctx) {
+        public void setIRIContext(IRIContext ctx) {
         }
 
         @Override

@@ -19,7 +19,7 @@ import java.net.URL;
 
 import org.xml.sax.ContentHandler;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.IMapHandler;
 
 /**
@@ -46,14 +46,14 @@ interface IXTMContentHandler extends ContentHandler {
      *
      * @return A context instance or <code>null</code> if the context wasn't set.
      */
-    public Context getContext();
+    public IRIContext getIRIContext();
 
     /**
      * Sets the context.
      *
      * @param ctx A context instance.
      */
-    public void setContext(Context ctx);
+    public void setIRIContext(IRIContext ctx);
 
     /**
      * Sets the content handler into the subordinate mode.

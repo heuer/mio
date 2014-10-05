@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.DeserializerRegistry;
 import com.semagia.mio.IDeserializer;
 import com.semagia.mio.IMapHandler;
@@ -67,7 +67,7 @@ abstract class AbstractLTMParser {
     protected boolean _legacy;
     private Locator _docLocator;
     private Locator _baseLocator;
-    private Context _context;
+    private IRIContext _context;
     private boolean _isSubordinate;
     private IPrefixListener _listener;
     protected IRef _sort;
@@ -75,7 +75,7 @@ abstract class AbstractLTMParser {
     public AbstractLTMParser() {
         _sidPrefixes = new HashMap<String, String>();
         _sloPrefixes = new HashMap<String, String>();
-        _context = new Context();
+        _context = new IRIContext();
         _included = new ArrayList<Locator>();
         _sort = _TMDM_SORT;
     }
@@ -112,11 +112,11 @@ abstract class AbstractLTMParser {
         _included = included;
     }
 
-    public Context getContext() {
+    public IRIContext getContext() {
         return _context;
     }
 
-    public void setContext(final Context ctx) {
+    public void setContext(final IRIContext ctx) {
         _context = ctx;
     }
 
@@ -465,7 +465,7 @@ abstract class AbstractLTMParser {
         deser.setMapHandler(_handler);
         deser.setSubordinate(true);
         deser.setPrefixListener(_listener);
-        deser.setContext(_context);
+        deser.setIRIContext(_context);
         deser.setIncludedBy(included);
         deser.parse(new Source(docIRI.toExternalForm()));
     }
@@ -497,7 +497,7 @@ abstract class AbstractLTMParser {
             }
             deser.setMapHandler(_handler);
             deser.setSubordinate(true);
-            deser.setContext(_context);
+            deser.setIRIContext(_context);
             deser.parse(new Source(docIRI.toExternalForm()));
         }
     }

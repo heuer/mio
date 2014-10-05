@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.IMapHandler;
 import com.semagia.mio.MIOException;
 import com.semagia.mio.helpers.Locator;
@@ -52,7 +52,7 @@ abstract class AbstractXTMContentHandler extends DefaultHandler implements IXTMC
      */
     protected Locator _docLocator;
 
-    protected Context _context;
+    protected IRIContext _context;
 
     protected boolean _isSubordinate;
 
@@ -81,7 +81,7 @@ abstract class AbstractXTMContentHandler extends DefaultHandler implements IXTMC
      * @see com.semagia.mio.xtm.IXTMContentHandler#getContext()
      */
     @Override
-    public Context getContext() {
+    public IRIContext getIRIContext() {
         return _context;
     }
 
@@ -89,7 +89,7 @@ abstract class AbstractXTMContentHandler extends DefaultHandler implements IXTMC
      * @see com.semagia.mio.xtm.IXTMContentHandler#setContext(com.semagia.mio.Context)
      */
     @Override
-    public void setContext(Context ctx) {
+    public void setIRIContext(IRIContext ctx) {
         _context = ctx;
     }
 

@@ -18,26 +18,25 @@ package com.semagia.mio.base;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 
 /**
  * Abstract {@link IDeserializer} implementation which extends the 
  * {@link AbstractDeserializer} and provides common properties like 
  * {@link com.semagia.mio.IDeserializer#getContext()}, 
- * {@link com.semagia.mio.IDeserializer#setContext(Context)} and
+ * {@link com.semagia.mio.IDeserializer#setContext(IRIContext)} and
  * {@link com.semagia.mio.IDeserializer#getProperty(String)}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 607 $ - $Date: 2011-01-20 02:28:15 +0100 (Do, 20 Jan 2011) $
  */
 public abstract class AbstractDefaultDeserializer extends
         AbstractDeserializer {
 
-    private Context _context;
+    private IRIContext _iris;
     private final Map<String, Object> _properties;
 
     protected AbstractDefaultDeserializer() {
-        _context = new Context();
+        _iris = new IRIContext();
         _properties = new HashMap<String, Object>();
     }
 
@@ -45,16 +44,16 @@ public abstract class AbstractDefaultDeserializer extends
      * @see com.semagia.mio.IDeserializer#getContext()
      */
     @Override
-    public Context getContext() {
-        return _context;
+    public IRIContext getIRIContext() {
+        return _iris;
     }
 
     /* (non-Javadoc)
      * @see com.semagia.mio.IDeserializer#setContext(com.semagia.mio.Context)
      */
     @Override
-    public void setContext(final Context ctx) {
-        _context = ctx;
+    public void setIRIContext(final IRIContext ctx) {
+        _iris = ctx;
     }
 
     /* (non-Javadoc)

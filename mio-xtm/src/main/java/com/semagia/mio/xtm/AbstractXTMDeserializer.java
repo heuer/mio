@@ -25,7 +25,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.ISyntaxVersionAware;
 import com.semagia.mio.MIOException;
 import com.semagia.mio.MIOParseException;
@@ -63,10 +63,10 @@ abstract class AbstractXTMDeserializer<T extends IXTMContentHandler> extends
             _contentHandler.setMapHandler(super._handler);
             _contentHandler.setSubordianate(_isSubordinate);
             if (src.getBaseIRI() != null) {
-                getContext().addIRI(src.getBaseIRI());
+                getIRIContext().addIRI(src.getBaseIRI());
             }
             if (src.getIRI() != null) {
-                getContext().addIRI(src.getIRI());
+                getIRIContext().addIRI(src.getIRI());
             }
             if (!Boolean.FALSE.equals(getProperty(Property.VALIDATE)) 
                     // The XTMContentHandler handles the validation itself
@@ -104,16 +104,16 @@ abstract class AbstractXTMDeserializer<T extends IXTMContentHandler> extends
      * @see com.semagia.mio.IDeserializer#getContext()
      */
     @Override
-    public Context getContext() {
-        return _contentHandler.getContext();
+    public IRIContext getIRIContext() {
+        return _contentHandler.getIRIContext();
     }
 
     /* (non-Javadoc)
      * @see com.semagia.mio.IDeserializer#setContext(com.semagia.mio.Context)
      */
     @Override
-    public void setContext(Context ctx) {
-        _contentHandler.setContext(ctx);
+    public void setIRIContext(IRIContext ctx) {
+        _contentHandler.setIRIContext(ctx);
     }
 
     /* (non-Javadoc)

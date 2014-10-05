@@ -16,24 +16,23 @@
 package com.semagia.mio;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The context provides information about IRIs which have been parsed already.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 607 $ - $Date: 2011-01-20 02:28:15 +0100 (Do, 20 Jan 2011) $
  */
-public final class Context {
+public final class IRIContext {
 
-    private final Set<String> _iris;
+    private final ConcurrentHashMap<String, Boolean> _iris;
 
     /**
      * Creates a new context.
      */
-    public Context() {
-        _iris = new HashSet<String>();
+    public IRIContext() {
+        _iris = new ConcurrentHashMap<String, Boolean>();
     }
 
     /**
@@ -41,8 +40,8 @@ public final class Context {
      *
      * @param iri The IRI to add.
      */
-    public synchronized void addIRI(String iri) {
-        _iris.add(iri);
+    public void addIRI(String iri) {
+        _iris.putIfAbsent(iri, Boolean.TRUE);
     }
 
     /**
@@ -50,8 +49,8 @@ public final class Context {
      *
      * @return A (maybe empty) unmodifiable collection of loaded IRIs.
      */
-    public synchronized Set<String> getIRIs() {
-        return Collections.unmodifiableSet(_iris);
+    public Set<String> getIRIs() {
+        return Collections.unmodifiableSet(_iris.keySet());
     }
 
     /**
@@ -60,7 +59,7 @@ public final class Context {
      * @param iri The IRI.
      * @return <tt>true</tt> if the IRI is known, otherwise <tt>false</tt>.
      */
-    public synchronized boolean containsIRI(String iri) {
+    public boolean containsIRI(String iri) {
         return _iris.contains(iri);
     }
 

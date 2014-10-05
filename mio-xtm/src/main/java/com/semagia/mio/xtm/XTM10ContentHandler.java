@@ -768,7 +768,7 @@ final class XTM10ContentHandler extends AbstractXTMContentHandler {
             final XTM10ContentHandler contentHandler = new XTM10ContentHandler();
             contentHandler.setDocumentIRI(_locator.toExternalForm());
             contentHandler.setMapHandler(_handler);
-            contentHandler.setContext(getContext());
+            contentHandler.setIRIContext(getIRIContext());
             final Set<IRef> scope = new HashSet<IRef>(_scope);
             final Collection<IRef> mergeMapScope = getMergeMapScope();
             if (mergeMapScope != null) {

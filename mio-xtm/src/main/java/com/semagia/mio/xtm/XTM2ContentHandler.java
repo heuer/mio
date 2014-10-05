@@ -419,7 +419,7 @@ final class XTM2ContentHandler extends AbstractXTMContentHandler {
     private void _processMergeMap(final String iri) throws MIOException {
         _context.addIRI(iri);
         final XTMDeserializer deser = new XTMDeserializer();
-        deser.setContext(_context);
+        deser.setIRIContext(_context);
         deser.setMapHandler(_handler);
         deser.setSubordinate(true);
         for (String key: _properties.keySet()) {

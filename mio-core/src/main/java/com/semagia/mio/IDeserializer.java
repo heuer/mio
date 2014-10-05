@@ -70,13 +70,13 @@ public interface IDeserializer extends IPropertyAware {
      *
      * @param ctx
      */
-    public void setContext(Context ctx);
+    public void setIRIContext(IRIContext ctx);
 
     /**
      * 
      *
      * @return
      */
-    public Context getContext();
+    public IRIContext getIRIContext();
 
 }

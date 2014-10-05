@@ -24,7 +24,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.IMapHandler;
 import com.semagia.mio.Property;
 import com.semagia.mio.utils.xml.RelaxNGValidatingContentHandler;
@@ -42,7 +42,7 @@ final class XTMContentHandler extends DefaultHandler implements IXTMContentHandl
     private ContentHandler _contentHandler;
     private IMapHandler _mapHandler;
     private String _docIRI;
-    private Context _context;
+    private IRIContext _context;
     private boolean _isSubordinate;
 
     XTMContentHandler() {
@@ -170,7 +170,7 @@ final class XTMContentHandler extends DefaultHandler implements IXTMContentHandl
      * @see com.semagia.mio.xtm.IXTMContentHandler#getContext()
      */
     @Override
-    public Context getContext() {
+    public IRIContext getIRIContext() {
         return _context;
     }
 
@@ -178,7 +178,7 @@ final class XTMContentHandler extends DefaultHandler implements IXTMContentHandl
      * @see com.semagia.mio.xtm.IXTMContentHandler#setContext(com.semagia.mio.Context)
      */
     @Override
-    public void setContext(final Context ctx) {
+    public void setIRIContext(final IRIContext ctx) {
         _context = ctx;
     }
 
@@ -238,7 +238,7 @@ final class XTMContentHandler extends DefaultHandler implements IXTMContentHandl
         }
         // Provide the missing info
         contentHandler.setMapHandler(_mapHandler);
-        contentHandler.setContext(_context);
+        contentHandler.setIRIContext(_context);
         contentHandler.setDocumentIRI(_docIRI);
         contentHandler.setSubordianate(_isSubordinate);
         for (String key: _properties.keySet()) {
