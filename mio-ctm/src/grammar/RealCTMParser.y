@@ -29,8 +29,8 @@ import com.semagia.mio.MIOParseException;
   */
 abstract class RealCTMParser extends AbstractCTMParser { 
 
-    protected RealCTMParser() {
-        super();
+    protected RealCTMParser(final IParseContext ctx) {
+        super(ctx);
     }
 
     protected RealCTMParser(final IContentHandler contentHandler) {
@@ -143,7 +143,7 @@ include_directive
             ;
 
 topicmap_reifier
-            : TILDE topic_ref               { if (!isSubordinate()) { _contentHandler.reifier($2); } else { _contentHandler.startTopic($2); _contentHandler.endTopic(); } }
+            : TILDE topic_ref               { if (!super._isSubordinate) { _contentHandler.reifier($2); } else { _contentHandler.startTopic($2); _contentHandler.endTopic(); } }
             ;
 
 ident       : IDENT                         { $$=_contentHandler.resolveIdentifier($1); }
@@ -151,8 +151,8 @@ ident       : IDENT                         { $$=_contentHandler.resolveIdentifi
 
 topic_ref_no_ident
             : embedded_topic                { $$=$1; }
-            | WILDCARD                      { IReference ref = _contentHandler.startTopic(); _contentHandler.endTopic(); $$=ref; }
-            | NAMED_WILDCARD                { IReference ref = _contentHandler.startTopic($1); _contentHandler.endTopic(); $$=ref; }
+            | WILDCARD                      { $$=super.createTopic(null); }
+            | NAMED_WILDCARD                { $$=super.createTopic($1); }
             | iid                           { $$=$1; }
             | qiri                          { $$=$1; }
             | slo                           { $$=$1; }
@@ -193,7 +193,7 @@ topic       : block_start assignments eot   { _contentHandler.endTopic(); }
 embedded_topic
             : embedded_start assignments opt_semi RBRACK { 
                 _contentHandler.endTopic();
-                $$=$1; 
+                $$ = $1; 
             }
             ;
 
