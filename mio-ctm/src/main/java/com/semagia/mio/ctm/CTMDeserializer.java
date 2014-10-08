@@ -23,13 +23,15 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
-import com.semagia.mio.Context;
+import com.semagia.mio.IRIContext;
 import com.semagia.mio.MIOException;
 import com.semagia.mio.Source;
 import com.semagia.mio.base.AbstractDeserializer;
 import com.semagia.mio.ctm.CTMParser;
 import com.semagia.mio.ctm.api.IPrefixListener;
+import com.semagia.mio.helpers.Locator;
 import com.semagia.mio.utils.BOMInputStream;
 
 /**
@@ -37,7 +39,6 @@ import com.semagia.mio.utils.BOMInputStream;
  * <a href="http://www.isotopicmaps.org/ctm/">CTM</a>.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 final class CTMDeserializer extends AbstractDeserializer {
 
@@ -51,8 +52,11 @@ final class CTMDeserializer extends AbstractDeserializer {
      */
     private static final String _DEFAULT_ENCODING = "utf-8";
 
-    private CTMParser _parser;
+    private IParseContext _parseCtx;
+    private IRIContext _iris;
     private final Map<String, Object> _properties;
+
+    private Set<Locator> _includedBy;
 
     /**
      * 
@@ -60,8 +64,15 @@ final class CTMDeserializer extends AbstractDeserializer {
      */
     public CTMDeserializer() {
         super();
-        _parser = new CTMParser();
         _properties = new HashMap<String, Object>();
+    }
+
+    void setParseContext(final IParseContext parseCtx) {
+        _parseCtx = parseCtx;
+    }
+
+    void setIncludedBy(Set<Locator> included) {
+        _includedBy = included;
     }
 
     /* (non-Javadoc)
@@ -71,15 +82,17 @@ final class CTMDeserializer extends AbstractDeserializer {
     protected void doParse(Source src) throws IOException,
             MIOException {
         final Reader reader = _reader(src);
+        final CTMParser parser = new CTMParser(_parseCtx != null ? _parseCtx : new ParseContext());
         try {
-            _parser.setSubordinate(super._isSubordinate);
-            _parser.setPrefixListener((IPrefixListener) getProperty("http://psi.semagia.com/mio/property/ctm/prefix-listener"));
-            _parser.setDocumentIRI(src.getBaseIRI());
-            _parser.setMapHandler(super._handler);
-            _parser.parse(reader);
+            parser.setSubordinate(super._isSubordinate);
+            parser.setIRIContext(_iris);
+            parser.setPrefixListener((IPrefixListener) getProperty("http://psi.semagia.com/mio/property/ctm/prefix-listener"));
+            parser.setDocumentIRI(Locator.create(src.getBaseIRI()));
+            parser.setMapHandler(super._handler);
+            parser.setIncludedBy(_includedBy);
+            parser.parse(reader);
         }
         finally {
-            _parser = null;
             if (reader != null) {
                 reader.close();
             }
@@ -87,19 +100,19 @@ final class CTMDeserializer extends AbstractDeserializer {
     }
 
     /* (non-Javadoc)
-     * @see com.semagia.mio.IDeserializer#getContext()
+     * @see com.semagia.mio.IDeserializer#setIRIContext(com.semagia.mio.IRIContext)
      */
     @Override
-    public Context getContext() {
-        return _parser.getContext();
+    public void setIRIContext(final IRIContext ctx) {
+        _iris = ctx; 
     }
 
     /* (non-Javadoc)
-     * @see com.semagia.mio.IDeserializer#setContext(com.semagia.mio.Context)
+     * @see com.semagia.mio.IDeserializer#getIRIContext()
      */
     @Override
-    public void setContext(final Context ctx) {
-        _parser.setContext(ctx);
+    public IRIContext getIRIContext() {
+        return _iris;
     }
 
     /* (non-Javadoc)
@@ -191,7 +204,4 @@ final class CTMDeserializer extends AbstractDeserializer {
         return new InputStreamReader(stream, stream.getEncoding());
     }
 
-    CTMParser getParser() {
-        return _parser;
-    }
 }

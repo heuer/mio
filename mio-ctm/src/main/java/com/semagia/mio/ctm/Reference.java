@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import com.semagia.mio.voc.XSD;
  * 
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 final class Reference implements IReference {
 
@@ -43,9 +42,10 @@ final class Reference implements IReference {
         LITERAL = 1012,
         FOCUS = 1013;
 
-    static final IReference CTM_INTEGER = create("*", CTMUtils.CTM_INTEGER);
-    static final IReference TOPIC_NAME = createIRI(TMDM.TOPIC_NAME);
-    static final IReference TOPIC_IN_FOCUS = new Reference(FOCUS, null);
+    static final IReference 
+        CTM_INTEGER = create("*", CTMUtils.CTM_INTEGER),
+        TOPIC_NAME = createIRI(TMDM.TOPIC_NAME),
+        TOPIC_IN_FOCUS = new Reference(FOCUS, null);
 
     private final int _type;
     private final Object _val;
@@ -214,6 +214,10 @@ final class Reference implements IReference {
 
     public static IReference createWildcard(String name) {
         return new Reference(WILDCARD, name);
+    }
+
+    public static IReference wrap(IRef ref) {
+        return new Reference(ref.getType(), ref.getIRI());
     }
 
     /* (non-Javadoc)

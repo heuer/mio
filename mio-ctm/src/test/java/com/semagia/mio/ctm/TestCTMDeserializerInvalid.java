@@ -30,7 +30,6 @@ import com.semagia.mio.cxtm.CXTMTestUtils;
  * Tests against the {@link CTMDeserializer}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 604 $ - $Date: 2011-01-18 23:36:52 +0100 (Di, 18 Jan 2011) $
  */
 @RunWith(Parameterized.class)
 public class TestCTMDeserializerInvalid extends AbstractInvalidCXTMTestCase {

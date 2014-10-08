@@ -15,8 +15,8 @@
  */
 package com.semagia.mio.ctm;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.semagia.mio.IMapHandler;
 import com.semagia.mio.MIOException;
@@ -27,14 +27,14 @@ import com.semagia.mio.helpers.Locator;
  * {@link GlobalScopeHandler} or {@link TemplateScopeHandler}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 final class MainContentHandler extends DelegatingContentHandler {
 
     private final IContentHandler _globalHandler;
+    private Set<Locator> _includedBy;
 
-    public MainContentHandler() {
-        this(new GlobalScopeHandler());
+    public MainContentHandler(final IParseContext ctx) {
+        this(new GlobalScopeHandler(ctx));
     }
 
     public MainContentHandler(final IContentHandler globalHandler) {
@@ -47,14 +47,13 @@ final class MainContentHandler extends DelegatingContentHandler {
      */
     @Override
     public IReference resolveIdentifier(final String identifier) throws MIOException {
-        final IEnvironment env = getEnvironment();
-        final IReference res = env.resolveIdentifier(identifier);
-        final Collection<Locator> includedBy = env.getIncludedBy();
-        if (!includedBy.isEmpty()) {
-            final IMapHandler handler = env.getMapHandler();
+        final IParseContext ctx = getParseContext();
+        final IReference res = ctx.resolveTopicIdentifier(identifier);
+        if (_includedBy != null) {
+            final IMapHandler handler = ctx.getMapHandler();
             handler.startTopic(res);
             final String frag = '#' + identifier;
-            for (Locator iri: includedBy) {
+            for (Locator iri: _includedBy) {
                 handler.itemIdentifier(iri.resolve(frag).toExternalForm());
             }
             handler.endTopic();
@@ -65,14 +64,22 @@ final class MainContentHandler extends DelegatingContentHandler {
     @Override
     public void startTemplate(final String name, final List<IReference> args)
             throws MIOException {
-        super._handler = new TemplateScopeHandler(_globalHandler.getEnvironment(), name, args);
+        super._handler = new TemplateScopeHandler(getParseContext(), name, args);
     }
 
     @Override
     public void endTemplate() throws MIOException {
         final ITemplate tpl = ((TemplateScopeHandler) _handler).dispose();
-        _globalHandler.getEnvironment().registerTemplate(tpl);
+        _globalHandler.getParseContext().registerTemplate(tpl);
         super._handler = _globalHandler;
+    }
+
+    void setIncludedBy(final Set<Locator> includedBy) {
+        _includedBy = includedBy;
+    }
+
+    Set<Locator> getIncludedBy() {
+        return _includedBy;
     }
 
 }

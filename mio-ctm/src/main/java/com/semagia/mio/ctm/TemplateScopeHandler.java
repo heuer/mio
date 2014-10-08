@@ -18,6 +18,7 @@ package com.semagia.mio.ctm;
 import java.util.Collections;
 import java.util.List;
 
+import com.semagia.mio.IRef;
 import com.semagia.mio.MIOException;
 import com.semagia.mio.helpers.Literal;
 import com.semagia.mio.helpers.SimpleMapHandler;
@@ -31,21 +32,24 @@ import com.semagia.mio.voc.XSD;
  */
 final class TemplateScopeHandler implements IContentHandler {
 
-    private IEnvironment _env;
+    private IParseContext _ctx;
     private Template _tpl;
     private int _topicIdx;
 
 
-    public TemplateScopeHandler(final IEnvironment environment, final String name,
+    public TemplateScopeHandler(final IParseContext ctx, final String name,
             final List<IReference> args) {
-        _env = environment;
+        _ctx = ctx;
         _tpl = new Template(name, args);
         _topicIdx = 0;
     }
 
+    /* (non-Javadoc)
+     * @see com.semagia.mio.ctm.IContentHandler#getParseContext()
+     */
     @Override
-    public IEnvironment getEnvironment() {
-        return _env;
+    public IParseContext getParseContext() {
+        return _ctx;
     }
 
     /* (non-Javadoc)
@@ -57,7 +61,7 @@ final class TemplateScopeHandler implements IContentHandler {
     }
 
     public ITemplate dispose() {
-        _env = null;
+        _ctx = null;
         final ITemplate tpl = _tpl;
         _tpl = null;
         return tpl;
@@ -114,8 +118,7 @@ final class TemplateScopeHandler implements IContentHandler {
     }
 
     @Override
-    public void handleRole(IReference type, IReference player,
-            IReference reifier) throws MIOException {
+    public void handleRole(IReference type, IReference player, IReference reifier) throws MIOException {
         _tpl.add(Template.ROLE, type, player, reifier);
     }
 
@@ -430,7 +433,7 @@ final class TemplateScopeHandler implements IContentHandler {
                         break;
                     case VSID:
                         IReference sid = ctx.getTopicReference(_values[offset]);
-                        if (!sid.isIRI()) {
+                        if (sid.getType() != IRef.SUBJECT_IDENTIFIER) {
                             throw new MIOException("Expected an IRI, got: " + sid);
                         }
                         handler.subjectIdentifier(sid.getIRI());
@@ -453,7 +456,7 @@ final class TemplateScopeHandler implements IContentHandler {
                         offset++;
                         break;
                     case TEMPLATE_INVOCATION:
-                        _tplCalls[tplIdx].execute(ctx.getEnvironment());
+                        _tplCalls[tplIdx].execute(ctx.getParseContext());
                         tplIdx++;
                         break;
                     default: 
@@ -482,15 +485,14 @@ final class TemplateScopeHandler implements IContentHandler {
             _args = _bindings.length == 0 ? _EMPTY_REFS : new IReference[_bindings.length];
         }
 
-        public void execute(final IEnvironment environment) throws MIOException {
-            final Environment env = (Environment) environment;
+        public void execute(final IParseContext context) throws MIOException {
             if (_tpl == null) {
-                _initTemplate((Template) env.getTemplate(_name, _bindings.length));
+                _initTemplate((Template) context.getTemplate(_name, _bindings.length));
             }
-            final ITemplateContext ctx = env.createTemplateContext(_args, _bindings);
-            env.pushTemplateContext(ctx);
-            _tpl.execute(ctx);
-            env.popTemplateContext();
+            final ITemplateContext tplCtx = context.createTemplateContext(_args, _bindings);
+            context.pushTemplateContext(tplCtx);
+            _tpl.execute(tplCtx);
+            context.popTemplateContext();
         }
 
         private void _initTemplate(final Template tpl) {

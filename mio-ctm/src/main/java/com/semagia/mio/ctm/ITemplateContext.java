@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.semagia.mio.ctm;
 
+import com.semagia.mio.IRef;
 import com.semagia.mio.MIOException;
 import com.semagia.mio.helpers.Literal;
 import com.semagia.mio.helpers.SimpleMapHandler;
@@ -23,7 +24,6 @@ import com.semagia.mio.helpers.SimpleMapHandler;
  * Template context which keeps track of variable bindings.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 interface ITemplateContext {
 
@@ -39,7 +39,7 @@ interface ITemplateContext {
      *
      * @return The environment.
      */
-    IEnvironment getEnvironment();
+    IParseContext getParseContext();
 
     /**
      * Resolves the provided reference to a topic.
@@ -85,6 +85,8 @@ interface ITemplateContext {
      *
      * @return The topic in the focus.
      */
-    IReference getFocus();
+    IRef getFocus();
+
+
 
 }

@@ -33,20 +33,24 @@ final class GlobalScopeHandler implements IContentHandler {
 
     private IReference[] _topicStack;
     private int _topicIdx;
-    private final IEnvironment _env;
+    private final IParseContext _ctx;
 
-    public GlobalScopeHandler() {
-        this(new Environment());
-    }
-
-    public GlobalScopeHandler(final IEnvironment env) {
-        _env = env;
+    public GlobalScopeHandler(final IParseContext ctx) {
+        _ctx = ctx;
         _topicStack = new IReference[2];
         _topicIdx = -1;
     }
 
+    /* (non-Javadoc)
+     * @see com.semagia.mio.ctm.IContentHandler#getParseContext()
+     */
+    @Override
+    public IParseContext getParseContext() {
+        return _ctx;
+    }
+
     private SimpleMapHandler _handler() {
-        return _env.getMapHandler();
+        return _ctx.getMapHandler();
     }
 
     /* (non-Javadoc)
@@ -67,7 +71,7 @@ final class GlobalScopeHandler implements IContentHandler {
             args.add(0, _topicStack[_topicIdx]);
         }
         final TemplateInvocation tplCall = new TemplateInvocation(name, args);
-        tplCall.execute(_env);
+        tplCall.execute(_ctx);
     }
 
     /* (non-Javadoc)
@@ -137,19 +141,10 @@ final class GlobalScopeHandler implements IContentHandler {
     }
 
     /* (non-Javadoc)
-     * @see com.semagia.mio.ctm.IContentHandler#getEnvironment()
-     */
-    @Override
-    public IEnvironment getEnvironment() {
-        return _env;
-    }
-
-    /* (non-Javadoc)
      * @see com.semagia.mio.ctm.IContentHandler#handleRole(com.semagia.mio.ctm.IReference, com.semagia.mio.ctm.IReference, com.semagia.mio.ctm.IReference)
      */
     @Override
-    public void handleRole(IReference type, IReference player,
-            IReference reifier) throws MIOException {
+    public void handleRole(IReference type, IReference player, IReference reifier) throws MIOException {
         final SimpleMapHandler handler = _handler();
         handler.startRole(type);
         handler.player(player);
@@ -245,7 +240,7 @@ final class GlobalScopeHandler implements IContentHandler {
      */
     @Override
     public IReference startTopic(final String name) throws MIOException {
-        final IReference ref = _env.topicByWildcard(name);
+        final IReference ref = _ctx.getTopicByWildcard(name);
         startTopic(ref);
         return ref;
     }

@@ -35,6 +35,14 @@ class DelegatingContentHandler implements IContentHandler {
     }
 
     /* (non-Javadoc)
+     * @see com.semagia.mio.ctm.IContentHandler#getParseContext()
+     */
+    @Override
+    public IParseContext getParseContext() {
+        return _handler.getParseContext();
+    }
+
+    /* (non-Javadoc)
      * @see com.semagia.mio.ctm.IContentHandler#resolveIdentifier(java.lang.String)
      */
     @Override
@@ -125,19 +133,10 @@ class DelegatingContentHandler implements IContentHandler {
     }
 
     /* (non-Javadoc)
-     * @see com.semagia.mio.ctm.IContentHandler#getParserEnvironment()
-     */
-    @Override
-    public IEnvironment getEnvironment() {
-        return _handler.getEnvironment();
-    }
-
-    /* (non-Javadoc)
      * @see com.semagia.mio.ctm.IContentHandler#handleRole(com.semagia.mio.ctm.IReference, com.semagia.mio.ctm.IReference, com.semagia.mio.ctm.IReference)
      */
     @Override
-    public void handleRole(IReference type, IReference player,
-            IReference reifier) throws MIOException {
+    public void handleRole(IReference type, IReference player, IReference reifier) throws MIOException {
         _handler.handleRole(type, player, reifier);
     }
 

@@ -24,7 +24,6 @@ import com.semagia.mio.Syntax;
  * able to read <a href="http://www.isotopicmaps.org/ctm/">ISO/IEC 13250-6 - Compact Topic Maps (CTM) 1.0</a>.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 603 $ - $Date: 2011-01-18 23:04:34 +0100 (Di, 18 Jan 2011) $
  */
 public final class CTMDeserializerFactory implements IDeserializerFactory {
 

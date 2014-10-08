@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2009 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package com.semagia.mio.ctm;
 
 import java.util.List;
 
+import com.semagia.mio.IRef;
 import com.semagia.mio.MIOException;
 
 /**
@@ -26,16 +27,10 @@ import com.semagia.mio.MIOException;
  * to some extent.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 interface IContentHandler {
 
-    /**
-     * Returns the environment.
-     *
-     * @return The environment, never {@code null}.
-     */
-    public IEnvironment getEnvironment();
+    public IParseContext getParseContext();
 
     /**
      * Resolves the provided topic identifier against the base IRI.
@@ -130,7 +125,7 @@ interface IContentHandler {
      * Indicates that a template with the specified name should
      * be called.
      * 
-     * If this method is invoked after a {@link #startTopic(IReference)} event,
+     * If this method is invoked after a {@link #startTopic(IRef)} event,
      * the arguments <tt>args</tt> have to be modified, so the first
      * arg becomes the topic.
      *

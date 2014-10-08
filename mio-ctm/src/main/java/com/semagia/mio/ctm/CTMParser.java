@@ -26,16 +26,15 @@ import com.semagia.mio.ctm.CTMLexer;
  * {@link CTMLexer}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 606 $ - $Date: 2011-01-20 00:48:46 +0100 (Do, 20 Jan 2011) $
  */
 final class CTMParser extends RealCTMParser {
 
-    CTMParser() {
-        super();
-    }
-
     CTMParser(IContentHandler contentHandler) {
         super(contentHandler);
+    }
+
+    CTMParser(IParseContext ctx) {
+        super(ctx);
     }
 
     /**

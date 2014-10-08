@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2008 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,6 @@ import com.semagia.mio.voc.XSD;
  * <a href="http://www.isotopicmaps.org/ctm/">Compact Topic Maps (CTM) 1.0</a>.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 602 $ - $Date: 2011-01-18 17:24:44 +0100 (Di, 18 Jan 2011) $
  */
 public final class CTM10Handler extends AbstractHamsterMapHandler<IRef> {
     
