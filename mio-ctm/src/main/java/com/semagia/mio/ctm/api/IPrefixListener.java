@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package com.semagia.mio.ctm.api;
  * found in a CTM source.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
- * @version $Rev: 467 $ - $Date: 2010-09-08 12:17:40 +0200 (Mi, 08 Sep 2010) $
  */
 public interface IPrefixListener {
 

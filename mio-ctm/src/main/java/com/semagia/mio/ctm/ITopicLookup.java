@@ -19,11 +19,12 @@ import com.semagia.mio.IRef;
 import com.semagia.mio.MIOException;
 
 /**
- * 
+ * EXPERIMENTAL: Read-only context to resolve QNames and wildcard topic
+ * identifiers.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
  */
-public interface IReadOnlyTopicLookup {
+public interface ITopicLookup {
 
     /**
      * Resolves a QName.

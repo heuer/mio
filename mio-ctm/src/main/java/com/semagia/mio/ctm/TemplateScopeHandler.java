@@ -63,8 +63,8 @@ final class TemplateScopeHandler implements IContentHandler {
     }
 
     public ITemplate dispose() {
-        _ctx = null;
         final ITemplate tpl = _tpl;
+        _ctx = null;
         _tpl = null;
         return tpl;
     }

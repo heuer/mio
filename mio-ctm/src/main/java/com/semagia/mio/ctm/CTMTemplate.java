@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 Lars Heuer (heuer[at]semagia.com)
+ * Copyright 2007 - 2014 Lars Heuer (heuer[at]semagia.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import com.semagia.mio.ctm.TemplateScopeHandler.TemplateInvocation;
 import com.semagia.mio.helpers.Locator;
 
 /**
+ * EXPERIMENTAL: 
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
  */
@@ -35,9 +36,9 @@ public final class CTMTemplate {
     private final String _name;
     private final IParseContext _ctx;
 
-    private CTMTemplate(final String name, final IParseContext env) {
+    private CTMTemplate(final String name, final IParseContext ctx) {
         _name = name;
-        _ctx = env;
+        _ctx = ctx;
     }
 
     public String getName() {
@@ -57,7 +58,7 @@ public final class CTMTemplate {
         return builder(baseIRI, null);
     }
 
-    public static Builder builder(final String baseIRI, final IReadOnlyTopicLookup lookup) {
+    public static Builder builder(final String baseIRI, final ITopicLookup lookup) {
         final Builder builder = new Builder(baseIRI, lookup);
         return builder;
     }
@@ -68,7 +69,7 @@ public final class CTMTemplate {
         private IParseContext _ctx;
         private String _name;
 
-        private Builder(final String baseIRI, final IReadOnlyTopicLookup lookup) {
+        private Builder(final String baseIRI, final ITopicLookup lookup) {
             if (baseIRI == null) {
                 throw new IllegalArgumentException("The base IRI must not be null");
             }
