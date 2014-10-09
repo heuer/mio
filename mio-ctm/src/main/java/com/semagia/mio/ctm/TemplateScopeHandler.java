@@ -35,6 +35,7 @@ final class TemplateScopeHandler implements IContentHandler {
     private IParseContext _ctx;
     private Template _tpl;
     private int _topicIdx;
+    private boolean _inTopic;
 
 
     public TemplateScopeHandler(final IParseContext ctx, final String name,
@@ -42,6 +43,7 @@ final class TemplateScopeHandler implements IContentHandler {
         _ctx = ctx;
         _tpl = new Template(name, args);
         _topicIdx = 0;
+        
     }
 
     /* (non-Javadoc)
@@ -75,7 +77,7 @@ final class TemplateScopeHandler implements IContentHandler {
     @Override
     public void callTemplate(String name, List<IReference> args)
             throws MIOException {
-        if (_topicIdx > 0) {
+        if (_inTopic) {
             args.add(0, Reference.TOPIC_IN_FOCUS);
         }
         _tpl.add(new TemplateInvocation(name, args));
@@ -108,7 +110,7 @@ final class TemplateScopeHandler implements IContentHandler {
 
     @Override
     public void endTopic() throws MIOException {
-        _topicIdx--;
+        _inTopic = false;
         _tpl.add(Template.END_TOPIC);
     }
 
@@ -185,12 +187,13 @@ final class TemplateScopeHandler implements IContentHandler {
 
     @Override
     public void startTopic(final IReference ref) throws MIOException {
-        _topicIdx++;
+        _inTopic = true;
         _tpl.add(Template.START_TOPIC, ref);
     }
 
     @Override
     public IReference startTopic(final String name) throws MIOException {
+        _topicIdx++;
         final IReference identity = name == null 
                 ? Reference.createWildcard(_tpl.getName() + "_" + _topicIdx)
                 : Reference.createNamedWildcard(name);
