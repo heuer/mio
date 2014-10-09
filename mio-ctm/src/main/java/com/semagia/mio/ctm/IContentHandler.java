@@ -30,6 +30,12 @@ import com.semagia.mio.MIOException;
  */
 interface IContentHandler {
 
+    /**
+     * Returns the parse context which keeps track of registered prefixes,
+     * templates etc.
+     *
+     * @return A parse context instance, never {@code null}.
+     */
     public IParseContext getParseContext();
 
     /**

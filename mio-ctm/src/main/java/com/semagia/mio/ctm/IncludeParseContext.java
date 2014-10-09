@@ -18,17 +18,33 @@ package com.semagia.mio.ctm;
 import com.semagia.mio.MIOException;
 
 /**
+ * {@link IParseContext} implementation for CTM sources which have been included
+ * by a parent CTM source.
  * 
+ * Further, all templates registered within this context are made available
+ * within the parent context as well.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
  */
 final class IncludeParseContext extends AbstractParseContext {
 
-    private final AbstractParseContext _parent;
+    /**
+     * The parent context.
+     */
+    private final IParseContext _parent;
 
+    /**
+     * Creates a new instance with the provided parent which is
+     * used to resolve wildcards.
+     * 
+     * @param parent The parent parse context which is used to create wildcard topics.
+     */
     IncludeParseContext(final IParseContext parent) {
         super();
-        _parent = (AbstractParseContext) parent;
+        if (parent == null) {
+            throw new IllegalArgumentException("The parent parse context must not be null");
+        }
+        _parent = parent;
     }
 
     /* (non-Javadoc)

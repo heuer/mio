@@ -299,7 +299,7 @@ final class GlobalScopeHandler implements IContentHandler {
      */
     @Override
     public void identity(IReference ref) throws MIOException {
-        _reportIllegalState("identity");
+        reportIllegalState("identity");
     }
 
     /* (non-Javadoc)
@@ -307,7 +307,7 @@ final class GlobalScopeHandler implements IContentHandler {
      */
     @Override
     public void itemIdentifierVariable(IReference ref) throws MIOException {
-        _reportIllegalState("addItemIdentifierVariable");
+        reportIllegalState("addItemIdentifierVariable");
     }
 
     /* (non-Javadoc)
@@ -315,7 +315,7 @@ final class GlobalScopeHandler implements IContentHandler {
      */
     @Override
     public void subjectLocatorVariable(IReference ref) throws MIOException {
-        _reportIllegalState("addSubjectLocatorVariable");
+        reportIllegalState("addSubjectLocatorVariable");
     }
     
     /* (non-Javadoc)
@@ -323,7 +323,7 @@ final class GlobalScopeHandler implements IContentHandler {
      */
     @Override
     public void startTemplate(String name, List<IReference> args) throws MIOException {
-        _reportIllegalState("startTemplate");
+        reportIllegalState("startTemplate");
     }
 
     /* (non-Javadoc)
@@ -331,10 +331,10 @@ final class GlobalScopeHandler implements IContentHandler {
      */
     @Override
     public void endTemplate() throws MIOException {
-        _reportIllegalState("endTemplate");
+        reportIllegalState("endTemplate");
     }
 
-    private void _reportIllegalState(final String method) throws MIOException {
+    private static void reportIllegalState(final String method) throws MIOException {
         throw new MIOException("Illegal invocation of '" + method + "'");
     }
 

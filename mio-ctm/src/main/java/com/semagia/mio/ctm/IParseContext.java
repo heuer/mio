@@ -35,21 +35,9 @@ interface IParseContext {
     public IReference resolveWildcardIdentifier(String name);
     public String makeNextWildcardId(final String name);
 
-    /**
-     * Resolves the provided identifier against the document IRI.
-     *
-     * @param ident The identifier to resolve.
-     * @return An absolute IRI.
-     */
-    //public IRef resolveIdentifier(String ident) throws MIOException;
-
-    /// public IRef resolveIRI(String ident) throws MIOException;
-
     public void registerTemplate(ITemplate template) throws MIOException;
 
     public ITemplate getTemplate(String name, int arity) throws MIOException;
-
-    //public Locator resolveLocator(String iri);
 
     public Locator getDocumentIRI();
 
@@ -84,6 +72,12 @@ interface IParseContext {
 
     public IReference resolveIRI(String iri);
 
+    /**
+     * Resolves the provided identifier against the document IRI.
+     *
+     * @param ident The identifier to resolve.
+     * @return An absolute IRI.
+     */
     public IReference resolveTopicIdentifier(String ident);
 
     public void setDocumentIRI(Locator baseIRI);

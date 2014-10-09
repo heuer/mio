@@ -16,23 +16,29 @@
 package com.semagia.mio.ctm;
 
 /**
+ * Default implementation of {@link IParseContext}.
  * 
+ * This is the usual parse context. It may act as parent parse context
+ * of the {@link IncludeParseContext}.
  * 
  * @author Lars Heuer (heuer[at]semagia.com) <a href="http://www.semagia.com/">Semagia</a>
  */
 class ParseContext extends AbstractParseContext {
 
-    private int _counter;
+    /**
+     * The wildcard counter.
+     */
+    private int _wildcardCounter;
 
     ParseContext() {
         super();
-        _counter = 0;
+        _wildcardCounter = 0;
     }
 
     @Override
     public String makeNextWildcardId(final String name) {
-        _counter++;
-        final StringBuffer sb = new StringBuffer("$__").append(_counter);
+        _wildcardCounter++;
+        final StringBuffer sb = new StringBuffer("$__").append(_wildcardCounter);
         if (name != null) {
             sb.append('.');
             sb.append(name);

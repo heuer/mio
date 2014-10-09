@@ -56,10 +56,6 @@ abstract class AbstractCTMParser {
         _contentHandler = handler;
     }
 
-    IContentHandler getContentHandler() {
-        return _contentHandler;
-    }
-
     void setSubordinate(final boolean subordinate) {
         _isSubordinate = subordinate;
     }
