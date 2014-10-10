@@ -15,7 +15,17 @@
  */
 package com.semagia.mio.ctm;
 
+import org.tinytim.mio.TinyTimMapInputHandler;
+import org.tmapi.core.Construct;
+import org.tmapi.core.Locator;
+import org.tmapi.core.Topic;
+import org.tmapi.core.TopicMap;
+import org.tmapi.core.TopicMapSystem;
+import org.tmapi.core.TopicMapSystemFactory;
+
+import com.semagia.mio.IMapHandler;
 import com.semagia.mio.MIOException;
+import com.semagia.mio.ctm.CTMTemplate.IItem;
 
 import junit.framework.TestCase;
 
@@ -27,6 +37,22 @@ import junit.framework.TestCase;
 public class TestCTMTemplate extends TestCase {
 
     private static final String _BASE = "http://test.semagia.com/map";
+    private TopicMapSystem _sys;
+    private TopicMap _tm;
+    private Locator _baseLoc;
+
+    @Override
+    protected void setUp() throws Exception {
+        _sys = TopicMapSystemFactory.newInstance().newTopicMapSystem();
+        _baseLoc = _sys.createLocator(_BASE);
+        _tm = _sys.createTopicMap(_baseLoc);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        _tm.close();
+        _sys.close();
+    }
 
     private static CTMTemplate.Builder builder() throws Exception {
         return CTMTemplate.builder(_BASE);
@@ -37,11 +63,41 @@ public class TestCTMTemplate extends TestCase {
     }
 
     private static CTMTemplate buildEmpty(final String name) throws Exception {
-        return builder(name).build("");
+        return build(name, "");
     }
 
     private static CTMTemplate buildEmpty() throws Exception {
-        return builder().build("");
+        return build("");
+    }
+
+    private static CTMTemplate build(final String ctm) throws Exception {
+        return builder().build(ctm);
+    }
+
+    private static CTMTemplate build(final String name, final String ctm) throws Exception {
+        return builder(name).build(ctm);
+    }
+
+    private IMapHandler makeMapHandler() {
+        return makeMapHandler(_tm);
+    }
+
+    private static IMapHandler makeMapHandler(final TopicMap tm) {
+        return new TinyTimMapInputHandler(tm); 
+    }
+
+    public void testQNameInvalid() throws Exception {
+        try {
+            build("q:name isa qname.");
+            fail("The prefix 'q' is not defined");
+        }
+        catch (MIOException ex) {
+            // noop.
+        }
+    }
+
+    public void testQNameValid() throws Exception {
+        builder().addPrefix("q", "http://example.org/").build("q:name isa qname.");
     }
 
     public void testName() throws Exception {
@@ -52,26 +108,72 @@ public class TestCTMTemplate extends TestCase {
         assertTrue(CTMUtils.isValidId(tpl.getName()));
     }
 
-    public void testParse() throws Exception {
-        builder().build("topic.");
+    public void testStatic() throws Exception {
+        final CTMTemplate tpl = build("topic.");
+        assertEquals(0, _tm.getTopics().size());
+        final IMapHandler handler = makeMapHandler();
+        tpl.execute(handler);
+        assertEquals(1, _tm.getTopics().size());
+        final Construct c = _tm.getConstructByItemIdentifier(_baseLoc.resolve("#topic"));
+        assertNotNull(c);
+        assertTrue(c instanceof Topic);
+        tpl.execute(handler);
+        assertEquals(1, _tm.getTopics().size());
     }
 
-    public void testParse2() throws Exception {
-        builder().build("$x isa $y.");
+    public void testAnonymousWildcard() throws Exception {
+        final CTMTemplate tpl = build("?. ?.");
+        assertEquals(0, _tm.getTopics().size());
+        final IMapHandler handler = makeMapHandler();
+        tpl.execute(handler);
+        assertEquals(2, _tm.getTopics().size());
+        tpl.execute(handler);
+        assertEquals(4, _tm.getTopics().size());
     }
 
-    public void testQNameInvalid() throws Exception {
+    public void testWildcard() throws Exception {
+        final CTMTemplate tpl = build("?x. ?y. ?x.");
+        assertEquals(0, _tm.getTopics().size());
+        final IMapHandler handler = makeMapHandler();
+        tpl.execute(handler);
+        assertEquals(2, _tm.getTopics().size());
+        tpl.execute(handler);
+        assertEquals(4, _tm.getTopics().size());
+    }
+
+    public void testVariableInvalid() throws Exception {
+        final CTMTemplate tpl = build("$x isa $y.");
+        assertEquals(2, tpl.getArity());
+        final IMapHandler handler = makeMapHandler();
         try {
-            builder().build("q:name isa qname.");
-            fail("The prefix 'q' is not defined");
+            tpl.execute(handler);
+            fail("Expected an error because of missing params");
         }
-        catch (MIOException ex) {
+        catch (Exception ex) {
             // noop.
         }
+
     }
 
-    public void testQNameValid() throws Exception {
-        builder().addPrefix("q", "http://example.org/").build("q:name isa qname.");
+    public void testVariable() throws Exception {
+        final CTMTemplate tpl = build("$x isa $y.");
+        assertEquals(2, tpl.getArity());
+        final String instanceURI = "http://psi.example.org/instance";
+        final String typeURI = "http://psi.example.org/type";
+        final IItem itemInstance = CTMTemplate.createSubjectIdentifier(instanceURI);
+        final IItem itemType = CTMTemplate.createSubjectIdentifier(typeURI);
+        assertEquals(0, _tm.getTopics().size());
+        final IMapHandler handler = makeMapHandler();
+        tpl.execute(handler, itemInstance, itemType);
+        assertEquals(2, _tm.getTopics().size());
+        final Topic instance = _tm.getTopicBySubjectIdentifier(_tm.createLocator(instanceURI));
+        assertNotNull(instance);
+        assertEquals(1, instance.getSubjectIdentifiers().size());
+        assertEquals(instanceURI, instance.getSubjectIdentifiers().iterator().next().getReference());
+        final Topic type = _tm.getTopicBySubjectIdentifier(_tm.createLocator(typeURI));
+        assertNotNull(type);
+        assertEquals(1, type.getSubjectIdentifiers().size());
+        assertEquals(typeURI, type.getSubjectIdentifiers().iterator().next().getReference());
     }
 
 }
