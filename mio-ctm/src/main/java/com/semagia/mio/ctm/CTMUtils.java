@@ -211,7 +211,11 @@ public final class CTMUtils {
         final Matcher m = _VARIABLE_PATTERN.matcher(str);
         final List<String> variables = new ArrayList<String>(2);
         while (m.find()) {
-            final String ident = m.group().substring(1);
+            String ident = m.group().substring(1);
+            //TODO: RegEx should probably handle this:
+            if (ident.endsWith(".")) {
+                ident = ident.substring(0, ident.length()-1);
+            }
             if (isValidId(ident)) {
                 final String variable = omitDollar ? ident : m.group();
                 if (!variables.contains(variable)) {

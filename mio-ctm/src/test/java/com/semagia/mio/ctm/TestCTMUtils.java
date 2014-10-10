@@ -115,4 +115,14 @@ public class TestCTMUtils extends TestCase {
             assertEquals(expected[i], res.get(i));
         }
     }
+
+    public void testFindVariables2() {
+        final String s = "$a isa $b.";
+        final String[] expected = {"a", "b"};
+        List<String> res = CTMUtils.findVariables(s, true);
+        assertEquals(expected.length, res.size());
+        for (int i=0; i<expected.length; i++) {
+            assertEquals(expected[i], res.get(i));
+        }
+    }
 }
