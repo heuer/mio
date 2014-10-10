@@ -194,6 +194,7 @@ final class TemplateScopeHandler implements IContentHandler {
     @Override
     public IReference startTopic(final String name) throws MIOException {
         _topicIdx++;
+        //TODO: Find a better way to handle anonymous wildcards
         final IReference identity = name == null 
                 ? Reference.createWildcard(_tpl.getName() + "_" + _topicIdx)
                 : Reference.createNamedWildcard(name);
