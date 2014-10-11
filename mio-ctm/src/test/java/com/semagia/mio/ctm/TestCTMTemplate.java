@@ -192,4 +192,36 @@ public class TestCTMTemplate extends TestCase {
        assertEquals(val, name.getValue());
     }
 
+    public void testAssoc() throws Exception {
+        assertEquals(0, _tm.getTopics().size());
+        assertEquals(0, _tm.getAssociations().size());
+        final CTMTemplate tpl = build("member-of(member: $member, group: $group)");
+        final IMapHandler handler = makeMapHandler();
+        final String johnURI = "http://www.example.org/test#john";
+        final String beatlesURI = "http://www.example.org/test#beatles";
+        tpl.execute(handler, CTMTemplate.createSubjectIdentifier(johnURI), CTMTemplate.createSubjectIdentifier(beatlesURI));
+        assertEquals(1, _tm.getAssociations().size());
+        assertEquals(5, _tm.getTopics().size());
+        final Topic john = _tm.getTopicBySubjectIdentifier(_tm.createLocator(johnURI));
+        assertNotNull(john);
+        assertEquals(1, john.getRolesPlayed().size());
+        final Topic beatles = _tm.getTopicBySubjectIdentifier(_tm.createLocator(beatlesURI));
+        assertNotNull(beatles);
+        assertEquals(1, beatles.getRolesPlayed().size());
+        Construct obj = _tm.getConstructByItemIdentifier(_baseLoc.resolve("#member-of"));
+        assertTrue(obj instanceof Topic);
+        final Topic memberOf = (Topic) obj;
+        obj = _tm.getConstructByItemIdentifier(_baseLoc.resolve("#member"));
+        assertTrue(obj instanceof Topic);
+        final Topic member = (Topic) obj;
+        obj = _tm.getConstructByItemIdentifier(_baseLoc.resolve("#group"));
+        assertTrue(obj instanceof Topic);
+        final Topic group = (Topic) obj;
+        assertEquals(memberOf, john.getRolesPlayed().iterator().next().getParent().getType());
+        assertEquals(memberOf, beatles.getRolesPlayed().iterator().next().getParent().getType());
+        assertEquals(member, john.getRolesPlayed().iterator().next().getType());
+        assertEquals(group, beatles.getRolesPlayed().iterator().next().getType());
+        assertEquals(john.getRolesPlayed().iterator().next().getParent(), beatles.getRolesPlayed().iterator().next().getParent());
+    }
+
 }
