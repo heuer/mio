@@ -174,8 +174,8 @@ public final class CTMTemplate implements ITemplate {
      * @param val The string value.
      * @return A literal.
      */
-    public static ILiteral createString(String val) {
-        return new Literal(val, XSD.STRING);
+    public static ILiteral createString(final String val) {
+        return createLiteral(val, XSD.STRING);
     }
 
     /**
@@ -184,8 +184,8 @@ public final class CTMTemplate implements ITemplate {
      * @param val The date value.
      * @return A literal.
      */
-    public static ILiteral createDate(String val) {
-        return new Literal(val, XSD.DATE);
+    public static ILiteral createDate(final String val) {
+        return createLiteral(val, XSD.DATE);
     }
 
     /**
@@ -194,8 +194,8 @@ public final class CTMTemplate implements ITemplate {
      * @param val The date/time value.
      * @return A literal.
      */
-    public static ILiteral createDateTime(String val) {
-        return new Literal(val, XSD.DATE_TIME);
+    public static ILiteral createDateTime(final String val) {
+        return createLiteral(val, XSD.DATE_TIME);
     }
 
     /**
@@ -204,8 +204,8 @@ public final class CTMTemplate implements ITemplate {
      * @param val The integer value.
      * @return A literal.
      */
-    public static ILiteral createInteger(String val) {
-        return new Literal(val, XSD.INTEGER);
+    public static ILiteral createInteger(final String val) {
+        return createLiteral(val, XSD.INTEGER);
     }
 
     /**
@@ -214,8 +214,8 @@ public final class CTMTemplate implements ITemplate {
      * @param val The decimal value.
      * @return A literal.
      */
-    public static ILiteral createDecimal(String val) {
-        return new Literal(val, XSD.DECIMAL);
+    public static ILiteral createDecimal(final String val) {
+        return createLiteral(val, XSD.DECIMAL);
     }
 
     /**
@@ -224,8 +224,19 @@ public final class CTMTemplate implements ITemplate {
      * @param iri An absolute IRI.
      * @return A literal.
      */
-    public static ILiteral createIRI(String iri) {
-        return new Literal(iri, XSD.ANY_URI);
+    public static ILiteral createIRI(final String iri) {
+        return createLiteral(iri, XSD.ANY_URI);
+    }
+
+    /**
+     * Creates a literal with the specified value and datatype.
+     * 
+     * @param val The string representation.
+     * @param datatype The datatype, an IRI.
+     * @return A literal.
+     */
+    public static ILiteral createLiteral(final String val, final String datatype) {
+        return new Literal(val, datatype);
     }
 
     /**
