@@ -175,7 +175,7 @@ public final class CTMTemplate implements ITemplate {
      * @return A literal.
      */
     public static ILiteral createString(String val) {
-        return new Literal(IItem.ItemType.LITERAL, val, XSD.STRING);
+        return new Literal(val, XSD.STRING);
     }
 
     /**
@@ -185,7 +185,7 @@ public final class CTMTemplate implements ITemplate {
      * @return A literal.
      */
     public static ILiteral createIRI(String iri) {
-        return new Literal(IItem.ItemType.LITERAL, iri, XSD.ANY_URI);
+        return new Literal(iri, XSD.ANY_URI);
     }
 
     /**
@@ -235,12 +235,15 @@ public final class CTMTemplate implements ITemplate {
         String getIRI();
     }
 
+    /**
+     * Internal default implementation of IItem.
+     */
     private static class Item implements IItem {
 
         private final ItemType _type;
         private final String _iri;
 
-        public Item(ItemType type, String iri) {
+        Item(ItemType type, String iri) {
             _type = type;
             _iri = iri;
         }
@@ -257,12 +260,15 @@ public final class CTMTemplate implements ITemplate {
         
     }
 
+    /**
+     * Default internal implementation of ILiteral.
+     */
     private static final class Literal extends Item implements ILiteral {
 
         private final String _value;
 
-        public Literal(ItemType type, String value, String iri) {
-            super(type, iri);
+        Literal(String value, String iri) {
+            super(IItem.ItemType.LITERAL, iri);
             _value = value;
         }
 
