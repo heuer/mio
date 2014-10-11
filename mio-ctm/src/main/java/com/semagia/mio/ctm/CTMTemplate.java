@@ -74,7 +74,7 @@ public final class CTMTemplate implements ITemplate {
      * @param args The template parameters.
      * @throws MIOException In case of an error.
      */
-    public void execute(IMapHandler handler, final List<? extends IItem> args) throws MIOException {
+    public void execute(final IMapHandler handler, final List<? extends IItem> args) throws MIOException {
         execute(handler, args.toArray(new IItem[args.size()]));
     }
 
@@ -88,12 +88,12 @@ public final class CTMTemplate implements ITemplate {
      * @param args The template parameters.
      * @throws MIOException In case of an error.
      */
-    public void execute(IMapHandler handler, final IItem... args) throws MIOException {
+    public void execute(final IMapHandler handler, final IItem... args) throws MIOException {
         if (args.length != _arity) {
             throw new MIOException("Expecting " + _arity + " argument" + (_arity == 1 ? "" : 's') + ", got " + args.length);
         }
         final List<IReference> tplArgs = new ArrayList<IReference>(args.length);
-        for (IItem arg: args) {
+        for (final IItem arg: args) {
             switch (arg.getType()) {
                 case ITEM_IDENTIFIER: tplArgs.add(Reference.createIID(arg.getIRI())); break;
                 case SUBJECT_IDENTIFIER: tplArgs.add(Reference.createIRI(arg.getIRI())); break;
@@ -128,6 +128,7 @@ public final class CTMTemplate implements ITemplate {
      * Adding new prefixes via {@link Builder#addPrefix(String, String)} is not possible.
      * 
      * @param baseIRI An absolute IRI to resolve topic identifiers against.
+     * @param lookup Context to generate topic identifiers from wildcards and to resolve QNames.
      * @return A {@link Builder} instance.
      */
     public static Builder builder(final String baseIRI, final ITopicLookup lookup) {
@@ -294,7 +295,7 @@ public final class CTMTemplate implements ITemplate {
         private final ItemType _type;
         private final String _iri;
 
-        Item(ItemType type, String iri) {
+        Item(final ItemType type, final String iri) {
             _type = type;
             _iri = iri;
         }
@@ -318,7 +319,7 @@ public final class CTMTemplate implements ITemplate {
 
         private final String _value;
 
-        Literal(String value, String iri) {
+        Literal(final String value, final String iri) {
             super(IItem.ItemType.LITERAL, iri);
             _value = value;
         }
@@ -335,7 +336,7 @@ public final class CTMTemplate implements ITemplate {
      */
     public static class Builder {
 
-        private IParseContext _ctx;
+        private final IParseContext _ctx;
         private String _name;
 
         private Builder(final String baseIRI, final ITopicLookup lookup) {
@@ -375,7 +376,7 @@ public final class CTMTemplate implements ITemplate {
          * @return The builder instance.
          * @throws MIOException In case the prefix was bound to another IRI or if the underlying
          *          context is read-only (i.e. if a {@link ITopicLookup} was provided to create
-         *          the builder.
+         *          the builder).
          */
         public Builder addPrefix(final String prefix, final String iri) throws MIOException {
             _ctx.registerPrefix(prefix, iri);
