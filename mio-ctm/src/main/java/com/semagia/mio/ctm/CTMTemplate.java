@@ -179,6 +179,46 @@ public final class CTMTemplate implements ITemplate {
     }
 
     /**
+     * Creates a literal with datatype xsd:date with the provided value.
+     * 
+     * @param val The date value.
+     * @return A literal.
+     */
+    public static ILiteral createDate(String val) {
+        return new Literal(val, XSD.DATE);
+    }
+
+    /**
+     * Creates a literal with datatype xsd:dateTime with the provided value.
+     * 
+     * @param val The date/time value.
+     * @return A literal.
+     */
+    public static ILiteral createDateTime(String val) {
+        return new Literal(val, XSD.DATE_TIME);
+    }
+
+    /**
+     * Creates a literal with datatype xsd:integer with the provided value.
+     * 
+     * @param val The integer value.
+     * @return A literal.
+     */
+    public static ILiteral createInteger(String val) {
+        return new Literal(val, XSD.INTEGER);
+    }
+
+    /**
+     * Creates a literal with datatype xsd:decimal with the provided value.
+     * 
+     * @param val The decimal value.
+     * @return A literal.
+     */
+    public static ILiteral createDecimal(String val) {
+        return new Literal(val, XSD.DECIMAL);
+    }
+
+    /**
      * Creates a literal with datatype xsd:anyURI with the provided IRI.
      * 
      * @param iri An absolute IRI.

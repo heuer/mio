@@ -18,6 +18,7 @@ package com.semagia.mio.ctm;
 import org.tinytim.mio.TinyTimMapInputHandler;
 import org.tmapi.core.Construct;
 import org.tmapi.core.Locator;
+import org.tmapi.core.Name;
 import org.tmapi.core.Topic;
 import org.tmapi.core.TopicMap;
 import org.tmapi.core.TopicMapSystem;
@@ -100,7 +101,7 @@ public class TestCTMTemplate extends TestCase {
         builder().addPrefix("q", "http://example.org/").build("q:name isa qname.");
     }
 
-    public void testName() throws Exception {
+    public void testTemplateName() throws Exception {
         CTMTemplate tpl = buildEmpty("tpl");
         assertEquals("tpl", tpl.getName());
         tpl = buildEmpty();
@@ -174,6 +175,21 @@ public class TestCTMTemplate extends TestCase {
         assertNotNull(type);
         assertEquals(1, type.getSubjectIdentifiers().size());
         assertEquals(typeURI, type.getSubjectIdentifiers().iterator().next().getReference());
+    }
+
+    public void testName() throws Exception {
+        assertEquals(0, _tm.getTopics().size());
+       final CTMTemplate tpl = build("$t - $val.");
+       final IMapHandler handler = makeMapHandler();
+       final String sid = "http://psi.example.org/topic";
+       final String val = "Name value";
+       tpl.execute(handler, CTMTemplate.createSubjectIdentifier(sid), CTMTemplate.createString(val));
+       assertEquals(2, _tm.getTopics().size()); // two topics: topic and default name type topic!
+       final Topic t = _tm.getTopicBySubjectIdentifier(_tm.createLocator(sid));
+       assertNotNull(t);
+       assertEquals(1, t.getNames().size());
+       final Name name = t.getNames().iterator().next();
+       assertEquals(val, name.getValue());
     }
 
 }
